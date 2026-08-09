@@ -1,141 +1,225 @@
 <template>
-  <div class="px-4 sm:px-6 lg:px-8 py-8">
-    <div class="sm:flex sm:items-center">
-      <div class="sm:flex-auto">
-        <h1 class="text-2xl font-bold text-stone-900">Coupons</h1>
-        <p class="mt-2 text-sm text-stone-700">Manage discount coupons for your store.</p>
+  <div>
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-2xl font-bold">Coupons</h1>
+        <p class="text-gray-500 font-medium">Manage discount coupons for your store</p>
       </div>
-      <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-        <button @click="showAddModal = true" class="inline-flex items-center justify-center rounded-md border border-transparent bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 sm:w-auto">
-          Add Coupon
-        </button>
-      </div>
+      <button 
+        @click="isAddModalOpen = true; form = { code: '', discountType: 'percentage', discountValue: 0, isActive: true }"
+        class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-5 rounded-full transition-colors text-sm shadow-sm flex items-center"
+      >
+        Add Coupon
+      </button>
     </div>
 
-    <!-- Coupons List -->
-    <div class="mt-8 flex flex-col">
-      <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-          <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-            <table class="min-w-full divide-y divide-stone-300">
-              <thead class="bg-stone-50">
-                <tr>
-                  <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-stone-900 sm:pl-6">Code</th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-stone-900">Discount</th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-stone-900">Status</th>
-                  <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                    <span class="sr-only">Actions</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-stone-200 bg-white">
-                <tr v-if="loading" class="text-center py-4 text-sm text-stone-500">
-                  <td colspan="4" class="py-4">Loading coupons...</td>
-                </tr>
-                <tr v-else-if="coupons.length === 0" class="text-center py-4 text-sm text-stone-500">
-                  <td colspan="4" class="py-4">No coupons found.</td>
-                </tr>
-                <tr v-for="coupon in coupons" :key="coupon._id">
-                  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-stone-900 sm:pl-6">
-                    {{ coupon.code }}
-                  </td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-500">
-                    <span v-if="coupon.discountType === 'percentage'">{{ coupon.discountValue }}%</span>
-                    <span v-else>₦{{ coupon.discountValue.toFixed(2) }}</span>
-                  </td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-500">
-                    <span :class="[coupon.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800', 'inline-flex rounded-full px-2 text-xs font-semibold leading-5']">
-                      {{ coupon.isActive ? 'Active' : 'Inactive' }}
-                    </span>
-                  </td>
-                  <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                    <button @click="handleDelete(coupon._id)" class="text-red-600 hover:text-red-900">Delete</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+    <!-- Table Header Info -->
+    <div class="mb-4">
+      <h2 class="text-lg font-bold text-gray-800">
+        Coupon Records — <span class="font-normal">{{ filteredRows.length }} matching records</span>
+      </h2>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <div class="flex px-6 py-4 border-b border-gray-200 bg-gray-50">
+        <CustomInput v-model="q" placeholder="Search coupons..." class="w-72">
+          <template #leading>
+            <Search class="w-4 h-4 text-gray-400" />
+          </template>
+        </CustomInput>
+      </div>
+      
+      <div class="overflow-x-auto">
+        <UTable :columns="columns" :data="filteredRows" :loading="loading" class="min-w-[800px]" :ui="{ th: { base: 'bg-white text-gray-500 font-bold py-4 border-b border-gray-200' }, td: { base: 'py-4 border-b border-gray-100 last:border-0 text-gray-700 font-medium align-middle' } }">
+          
+          <template #code-cell="{ row: { original: row } }">
+            <div>
+              <p class="font-bold text-gray-900 tracking-wider">{{ row.code }}</p>
+            </div>
+          </template>
+
+          <template #discount-cell="{ row: { original: row } }">
+            <span class="font-semibold text-gray-800">
+              <span v-if="row.discountType === 'percentage'">{{ row.discountValue }}%</span>
+              <span v-else>₦{{ row.discountValue?.toFixed(2) || '0.00' }}</span>
+            </span>
+            <span class="text-xs text-gray-500 ml-1">Off</span>
+          </template>
+
+          <template #loading>
+            <div class="flex flex-col items-center justify-center py-12 text-gray-500">
+              <LoaderCircle class="w-8 h-8 animate-spin mb-4 text-emerald-700" />
+              <span class="text-sm font-medium">Loading coupons...</span>
+            </div>
+          </template>
+          
+          <template #empty-state>
+            <div class="flex flex-col items-center justify-center py-12 text-gray-500 font-medium">
+              <Inbox class="w-12 h-12 mb-4 text-gray-300" />
+              <span class="text-sm font-medium">No coupons found.</span>
+            </div>
+          </template>
+          
+          <template #status-cell="{ row: { original: row } }">
+            <span v-if="row.isActive" class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">Active</span>
+            <span v-else class="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-700">Inactive</span>
+          </template>
+          
+          <template #actions-cell="{ row: { original: row } }">
+            <div class="flex items-center space-x-2">
+              <button class="text-red-600 hover:bg-red-50 p-1.5 rounded-lg transition-colors" @click="handleDelete(row._id)" title="Delete">
+                <Trash2 class="w-4 h-4" />
+              </button>
+            </div>
+          </template>
+        </UTable>
+      </div>
+      
+      <!-- Pagination -->
+      <div class="p-4 border-t border-gray-200 flex items-center justify-between text-sm text-gray-500">
+        <div>Showing <span class="font-medium text-gray-900">1</span> to <span class="font-medium text-gray-900">{{ coupons.length }}</span> of <span class="font-medium text-gray-900">{{ coupons.length }}</span> results</div>
+        <div class="flex space-x-2">
+          <button class="px-3 py-1 border border-gray-200 rounded-md hover:bg-gray-50 disabled:opacity-50" disabled>Previous</button>
+          <button class="px-3 py-1 border border-gray-200 rounded-md hover:bg-gray-50 disabled:opacity-50" disabled>Next</button>
         </div>
       </div>
     </div>
+
+    <!-- Confirm Delete Modal -->
+    <ConfirmModal
+      v-model="showDeleteConfirm"
+      title="Delete Coupon"
+      message="Are you sure you want to delete this coupon? This action cannot be undone."
+      confirm-text="Delete"
+      @confirm="executeDelete"
+    />
 
     <!-- Add Coupon Modal -->
-    <div v-if="showAddModal" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-      <div class="fixed inset-0 bg-stone-500 bg-opacity-75 transition-opacity"></div>
-      <div class="fixed inset-0 z-10 overflow-y-auto">
-        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-          <div class="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
-            <form @submit.prevent="handleSubmit">
-              <div>
-                <h3 class="text-lg font-medium leading-6 text-stone-900" id="modal-title">Add New Coupon</h3>
-                <div class="mt-4 space-y-4">
-                  <div>
-                    <label class="block text-sm font-medium text-stone-700">Coupon Code</label>
-                    <input v-model="form.code" type="text" required class="mt-1 block w-full rounded-md border-stone-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm py-2 px-3 border uppercase" />
-                  </div>
-                  <div>
-                    <label class="block text-sm font-medium text-stone-700">Discount Type</label>
-                    <select v-model="form.discountType" class="mt-1 block w-full rounded-md border-stone-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm py-2 px-3 border">
-                      <option value="percentage">Percentage (%)</option>
-                      <option value="fixed">Fixed Amount (₦)</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label class="block text-sm font-medium text-stone-700">Discount Value</label>
-                    <input v-model="form.discountValue" type="number" required min="1" class="mt-1 block w-full rounded-md border-stone-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm py-2 px-3 border" />
-                  </div>
-                </div>
-              </div>
-              <div class="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
-                <button type="submit" :disabled="loading" class="inline-flex w-full justify-center rounded-md border border-transparent bg-emerald-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 sm:col-start-2 sm:text-sm disabled:opacity-50">
-                  {{ loading ? 'Saving...' : 'Save Coupon' }}
-                </button>
-                <button type="button" @click="showAddModal = false" class="mt-3 inline-flex w-full justify-center rounded-md border border-stone-300 bg-white px-4 py-2 text-base font-medium text-stone-700 shadow-sm hover:bg-stone-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 sm:col-start-1 sm:mt-0 sm:text-sm">
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </div>
+    <CustomModal v-model="isAddModalOpen" title="Add New Coupon" maxWidth="2xl">
+      <form @submit.prevent="handleSubmit" class="space-y-5">
+        <CustomInput 
+          v-model="form.code" 
+          label="Coupon Code" 
+          placeholder="e.g. SUMMER50" 
+          required
+        >
+          <template #leading>
+            <Tag class="w-5 h-5 text-gray-400" />
+          </template>
+        </CustomInput>
+        
+        <CustomSelect 
+          v-model="form.discountType" 
+          label="Discount Type" 
+          :options="[{ label: 'Percentage (%)', value: 'percentage' }, { label: 'Fixed Amount (₦)', value: 'fixed' }]" 
+        />
+        
+        <CustomInput 
+          v-model="form.discountValue" 
+          type="number"
+          label="Discount Value" 
+          placeholder="Value" 
+          required
+        />
+        
+        <CustomSelect 
+          v-model="form.isActive" 
+          label="Status" 
+          :options="[{ label: 'Active', value: true }, { label: 'Inactive', value: false }]" 
+        />
+
+        <div class="flex justify-end space-x-3 pt-4">
+          <button 
+            type="button" 
+            @click="isAddModalOpen = false" 
+            class="px-5 py-2.5 text-sm font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
+          >
+            Cancel
+          </button>
+          <button 
+            type="submit" 
+            class="px-5 py-2.5 text-sm font-bold text-white bg-emerald-700 hover:bg-emerald-800 rounded-full transition-colors flex items-center justify-center min-w-[120px]"
+            :disabled="loading"
+          >
+            <span v-if="!loading">Save Coupon</span>
+            <LoaderCircle v-else class="w-5 h-5 animate-spin" />
+          </button>
         </div>
-      </div>
-    </div>
+      </form>
+    </CustomModal>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useCoupons } from '@/composables/modules/coupons/useCoupons';
+import { ref, computed, onMounted } from 'vue'
+import { Tag, LoaderCircle, Inbox, Search, Trash2 } from 'lucide-vue-next'
+import { useCoupons } from '@/composables/modules/coupons/useCoupons'
 
 definePageMeta({
   layout: 'dashboard'
 });
 
 const { loading, coupons, fetchCoupons, createCoupon, deleteCoupon } = useCoupons();
+const toast = useToast()
 
-const showAddModal = ref(false);
+const q = ref('')
+const isAddModalOpen = ref(false)
+const showDeleteConfirm = ref(false)
+const couponToDelete = ref(null)
+
 const form = ref({
   code: '',
   discountType: 'percentage',
-  discountValue: 0
-});
+  discountValue: 0,
+  isActive: true
+})
 
 onMounted(() => {
-  fetchCoupons();
-});
+  fetchCoupons()
+})
+
+const columns = [
+  { accessorKey: 'code', header: 'Coupon Code' },
+  { accessorKey: 'discount', header: 'Discount' },
+  { accessorKey: 'status', header: 'Status' },
+  { accessorKey: 'actions', header: 'Actions' }
+]
+
+const filteredRows = computed(() => {
+  if (!coupons.value) return []
+  if (!q.value) return coupons.value
+  
+  return coupons.value.filter((coupon) => 
+    (coupon.code || '').toLowerCase().includes(q.value.toLowerCase())
+  )
+})
 
 const handleSubmit = async () => {
   try {
-    await createCoupon(form.value);
-    showAddModal.value = false;
-    form.value = { code: '', discountType: 'percentage', discountValue: 0 };
+    await createCoupon(form.value)
+    isAddModalOpen.value = false
+    form.value = { code: '', discountType: 'percentage', discountValue: 0, isActive: true }
+    // Fetch coupons after creation if needed
+    // await fetchCoupons()
   } catch (error) {
-    // Error handled in composable
+    // Error is handled in the composable
   }
-};
+}
 
-const handleDelete = async (id) => {
-  if (confirm('Are you sure you want to delete this coupon?')) {
-    await deleteCoupon(id);
+const handleDelete = (id) => {
+  couponToDelete.value = id
+  showDeleteConfirm.value = true
+}
+
+const executeDelete = async () => {
+  if (!couponToDelete.value) return
+  
+  try {
+    await deleteCoupon(couponToDelete.value)
+    showDeleteConfirm.value = false
+    couponToDelete.value = null
+  } catch (error) {
+    // Error is handled in the composable
   }
-};
+}
 </script>
