@@ -155,9 +155,9 @@ import { ref, computed, onMounted } from 'vue'
 import { Tag, LoaderCircle, Inbox, Search, Trash2 } from 'lucide-vue-next'
 import { useCoupons } from '@/composables/modules/coupons/useCoupons'
 
-definePageMeta({
-  layout: 'dashboard'
-});
+// definePageMeta({
+//   layout: 'dashboard'
+// });
 
 const { loading, coupons, fetchCoupons, createCoupon, deleteCoupon } = useCoupons();
 const toast = useToast()
