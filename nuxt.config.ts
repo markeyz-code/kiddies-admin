@@ -4,6 +4,12 @@ export default defineNuxtConfig({
   srcDir: 'app/',
   devtools: { enabled: true },
   modules: ['@nuxt/ui', '@pinia/nuxt'],
+  ui: {
+    fonts: false
+  },
+  fonts: {
+    provider: 'none'
+  },
   colorMode: {
     preference: 'light'
   },
