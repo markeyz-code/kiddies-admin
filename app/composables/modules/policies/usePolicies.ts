@@ -1,11 +1,12 @@
 import { ref } from 'vue'
+import { rawBaseUrl } from '@/api_factory/axios.config'
 
 export const usePolicies = () => {
   const policies = ref([])
   const loading = ref(false)
   const error = ref(null)
   
-  const API_URL = 'http://127.0.0.1:3002/product-policies'
+  const API_URL = `${rawBaseUrl}/product-policies`
 
   const fetchPolicies = async () => {
     loading.value = true

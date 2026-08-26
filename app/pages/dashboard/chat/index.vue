@@ -143,6 +143,7 @@
 </template>
 
 <script setup>
+import { rawBaseUrl } from '@/api_factory/axios.config'
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { io } from 'socket.io-client'
 import { ArrowLeft, MessageSquare, MoreVertical, Search, LoaderCircle, Smile, Paperclip, Mic, Send, Lock } from 'lucide-vue-next'
@@ -168,7 +169,7 @@ const activeSessionDetails = computed(() => {
 
 const fetchSessions = async () => {
   try {
-    const res = await fetch('http://localhost:3002/chat/sessions')
+    const res = await fetch(`${rawBaseUrl}/chat/sessions`)
     sessions.value = await res.json()
   } catch (err) {
     console.error('Error fetching sessions:', err)
@@ -186,7 +187,7 @@ const selectSession = async (sessionId) => {
   }
 
   try {
-    const res = await fetch(`http://localhost:3002/chat/session/${sessionId}`)
+    const res = await fetch(`${rawBaseUrl}/chat/session/${sessionId}`)
     activeMessages.value = await res.json()
     scrollToBottom()
   } catch (err) {
@@ -245,7 +246,7 @@ const scrollToBottom = () => {
 onMounted(() => {
   fetchSessions()
 
-  socket = io('http://localhost:3002')
+  socket = io(rawBaseUrl)
   
   // Admin joins the global admin room to receive new session notifications instantly
   socket.emit('join_admin')

@@ -1,12 +1,13 @@
 import { ref } from 'vue'
+import { rawBaseUrl } from '@/api_factory/axios.config'
 
 export const useCategories = () => {
   const categories = ref([])
   const loading = ref(false)
   const error = ref(null)
   
-  // API base URL (in a real app, this should come from config/env)
-  const API_URL = 'http://127.0.0.1:3002/categories'
+  // API base URL
+  const API_URL = `${rawBaseUrl}/categories`
 
   const fetchCategories = async () => {
     loading.value = true
