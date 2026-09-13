@@ -2,16 +2,13 @@
   <div class="min-h-screen flex w-full">
     <!-- Left Side: Image -->
     <div class="hidden lg:flex w-1/2 bg-gray-200 relative items-center justify-center overflow-hidden">
-      <!-- You can place an actual image here, using a placeholder gradient for now -->
-      <div class="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300"></div>
-      <div class="relative z-10 w-full h-full flex items-center justify-center p-12">
-         <!-- Abstract representation of the coins in the screenshot -->
-         <div class="grid grid-cols-2 gap-12 opacity-40">
-           <div class="w-32 h-32 rounded-full bg-gray-400 shadow-2xl border-4 border-gray-300"></div>
-           <div class="w-32 h-32 rounded-full bg-gray-400 shadow-2xl border-4 border-gray-300 translate-y-16"></div>
-           <div class="w-32 h-32 rounded-full bg-gray-400 shadow-2xl border-4 border-gray-300"></div>
-           <div class="w-32 h-32 rounded-full bg-gray-400 shadow-2xl border-4 border-gray-300 translate-y-16"></div>
-         </div>
+      <!-- Background Image -->
+      <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('/admin_login_bg.jpg')"></div>
+      <!-- Overlay for better text readability -->
+      <div class="absolute inset-0 bg-black/70"></div>
+      <div class="relative z-10 text-white p-12 text-center drop-shadow-md max-w-lg">
+        <h1 class="text-4xl font-extrabold mb-4 tracking-tight">Manage Your Premium Children's Clothing Store</h1>
+        <p class="text-lg font-medium opacity-90">Access the control center to oversee orders, inventory, and promotions with ease.</p>
       </div>
     </div>
 
