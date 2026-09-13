@@ -10,7 +10,7 @@ export const useProducts = () => {
         loading.value = true;
         try {
             const { data } = await productsApi.getProducts(params);
-            products.value = data;
+            products.value = data.products || data;
             return data;
         } catch (error: any) {
             console.error('Failed to fetch products', error);
