@@ -5,11 +5,11 @@
     
     <!-- Modal Content -->
     <div 
-      class="relative bg-white rounded-2xl shadow-xl w-full mx-auto transform transition-all"
+      class="relative bg-white rounded-2xl shadow-xl w-full mx-auto transform transition-all flex flex-col max-h-[90vh]"
       :class="[maxWidthClass]"
     >
       <!-- Header -->
-      <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+      <div class="flex-shrink-0 flex items-center justify-between px-6 py-4 border-b border-gray-100">
         <h3 class="text-lg font-bold text-gray-900">{{ title }}</h3>
         <button 
           @click="$emit('update:modelValue', false)"
@@ -20,7 +20,7 @@
       </div>
 
       <!-- Body -->
-      <div class="px-6 py-5">
+      <div class="px-6 py-5 overflow-y-auto">
         <slot></slot>
       </div>
       
