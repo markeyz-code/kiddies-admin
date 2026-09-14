@@ -115,7 +115,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
-import { LayoutDashboard, Tag, Folders, ShoppingBag, Users, Settings, LogOut, MessageSquare, Menu, X, Activity, Shield, Ticket, ChevronLeft, ChevronRight } from 'lucide-vue-next'
+import { LayoutDashboard, Tag, Folders, ShoppingBag, Users, Settings, LogOut, MessageSquare, Menu, X, Activity, Shield, Ticket, ChevronLeft, ChevronRight, Globe } from 'lucide-vue-next'
 import { useAuth } from '@/composables/modules/auth/useAuth'
 
 const { logout } = useAuth()
@@ -180,6 +180,7 @@ const navItems = [
   { name: 'Customers', path: '/dashboard/customers', icon: Users },
   { name: 'Audit Logs', path: '/dashboard/audit-logs', icon: Activity },
   { name: 'Live Chat', path: '/dashboard/chat', icon: MessageSquare },
+  { name: 'Storefront', path: '/dashboard/settings/storefront', icon: Globe },
   { name: 'Settings', path: '/dashboard/settings', icon: Settings }
 ]
 </script>
