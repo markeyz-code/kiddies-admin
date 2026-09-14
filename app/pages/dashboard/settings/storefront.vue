@@ -18,16 +18,35 @@
         </div>
         <div class="p-6 space-y-8">
           <div v-for="(hero, idx) in settings.heroCarousel" :key="idx" class="border border-gray-100 rounded-lg p-4 relative group">
-            <button @click="removeHero(idx)" class="absolute top-2 right-2 text-red-500 hover:bg-red-50 p-1 rounded transition-colors opacity-0 group-hover:opacity-100">
+            <button @click="removeHero(idx)" class="absolute top-2 right-2 text-red-500 hover:bg-red-50 p-1 rounded transition-colors opacity-0 group-hover:opacity-100 z-10">
               <Trash2 class="w-4 h-4" />
             </button>
             <div class="grid md:grid-cols-2 gap-4">
-              <CustomInput v-model="hero.imageUrl" label="Image URL" placeholder="/img/hero_fall_1..." />
-              <CustomInput v-model="hero.title" label="Title (use \n for newline)" placeholder="ICONIC\nFOR\nAUTUMN" />
-              <CustomInput v-model="hero.subtitle" label="Subtitle" placeholder="Charming outfits..." />
-              <div class="grid grid-cols-2 gap-2">
-                <CustomInput v-model="hero.ctaText" label="Button Text" placeholder="Shop Boys" />
-                <CustomInput v-model="hero.ctaLink" label="Button Link" placeholder="/category/boy" />
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Image</label>
+                <div v-if="hero.imageUrl" class="relative w-full h-32 rounded border border-gray-200 overflow-hidden mb-2 group">
+                  <img :src="hero.imageUrl" class="w-full h-full object-cover" />
+                  <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button @click="hero.imageUrl = ''" class="text-white text-xs font-semibold bg-red-600 px-3 py-1 rounded">Remove</button>
+                  </div>
+                </div>
+                <div v-else class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors relative">
+                  <input type="file" @change="e => uploadImage(e, (url) => hero.imageUrl = url)" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full" :disabled="uploading" />
+                  <UploadCloud v-if="!uploading" class="w-6 h-6 text-gray-400 mb-2" />
+                  <span v-if="!uploading" class="text-sm text-gray-500 font-medium">Click to upload image</span>
+                  <div v-else class="flex items-center space-x-2">
+                    <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-emerald-600"></div>
+                    <span class="text-sm text-gray-500 font-medium">Uploading...</span>
+                  </div>
+                </div>
+              </div>
+              <div class="space-y-4">
+                <CustomInput v-model="hero.title" label="Title (use \n for newline)" placeholder="ICONIC\nFOR\nAUTUMN" />
+                <CustomInput v-model="hero.subtitle" label="Subtitle" placeholder="Charming outfits..." />
+                <div class="grid grid-cols-2 gap-2">
+                  <CustomInput v-model="hero.ctaText" label="Button Text" placeholder="Shop Boys" />
+                  <CustomInput v-model="hero.ctaLink" label="Button Link" placeholder="/category/boy" />
+                </div>
               </div>
             </div>
           </div>
@@ -43,12 +62,29 @@
         <div class="p-6 space-y-6">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div v-for="(cat, idx) in settings.featuredCategories" :key="idx" class="border border-gray-100 rounded-lg p-4 relative group bg-gray-50/50">
-              <button @click="removeCategory(idx)" class="absolute top-2 right-2 text-red-500 hover:bg-red-50 p-1 rounded transition-colors opacity-0 group-hover:opacity-100">
+              <button @click="removeCategory(idx)" class="absolute top-2 right-2 text-red-500 hover:bg-red-50 p-1 rounded transition-colors opacity-0 group-hover:opacity-100 z-10">
                 <Trash2 class="w-4 h-4" />
               </button>
               <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-bold text-gray-700 mb-1">Image</label>
+                  <div v-if="cat.imageUrl" class="relative w-full aspect-[3/4] rounded border border-gray-200 overflow-hidden mb-2 group/img">
+                    <img :src="cat.imageUrl" class="w-full h-full object-cover" />
+                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity">
+                      <button @click="cat.imageUrl = ''" class="text-white text-xs font-semibold bg-red-600 px-3 py-1 rounded">Remove</button>
+                    </div>
+                  </div>
+                  <div v-else class="flex flex-col items-center justify-center w-full aspect-[3/4] border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors relative">
+                    <input type="file" @change="e => uploadImage(e, (url) => cat.imageUrl = url)" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full" :disabled="uploading" />
+                    <UploadCloud v-if="!uploading" class="w-6 h-6 text-gray-400 mb-2" />
+                    <span v-if="!uploading" class="text-sm text-gray-500 font-medium">Click to upload</span>
+                    <div v-else class="flex items-center space-x-2">
+                      <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-emerald-600"></div>
+                      <span class="text-sm text-gray-500 font-medium">Uploading...</span>
+                    </div>
+                  </div>
+                </div>
                 <CustomInput v-model="cat.title" label="Category Title" placeholder="Shop Boy" />
-                <CustomInput v-model="cat.imageUrl" label="Image URL" placeholder="/img/category_boy..." />
                 <CustomInput v-model="cat.link" label="Link" placeholder="/category/boy" />
               </div>
             </div>
@@ -94,14 +130,14 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { Save, Trash2 } from 'lucide-vue-next'
+import { Save, Trash2, UploadCloud } from 'lucide-vue-next'
 import { GATEWAY_ENDPOINT } from '~/api_factory/axios.config'
-import { useCustomToast } from '~/composables/core/useCustomToast'
 
-const { showToast } = useCustomToast()
+const toast = useToast()
 
 const loading = ref(true)
 const saving = ref(false)
+const uploading = ref(false)
 
 const settings = ref({
   heroCarousel: [],
@@ -121,7 +157,7 @@ const fetchSettings = async () => {
       settings.value = res.data
     }
   } catch (error) {
-    showToast({ title: 'Error', message: 'Failed to fetch settings', type: 'error' })
+    toast.add({ title: 'Error', description: 'Failed to fetch settings', color: 'red' })
   } finally {
     loading.value = false
   }
@@ -131,9 +167,9 @@ const saveSettings = async () => {
   try {
     saving.value = true
     await GATEWAY_ENDPOINT.put('/settings/storefront', settings.value)
-    showToast({ title: 'Success', message: 'Storefront settings updated successfully!', type: 'success' })
+    toast.add({ title: 'Success', description: 'Storefront settings updated successfully!', color: 'green' })
   } catch (error) {
-    showToast({ title: 'Error', message: 'Failed to update settings', type: 'error' })
+    toast.add({ title: 'Error', description: 'Failed to update settings', color: 'red' })
   } finally {
     saving.value = false
   }
@@ -157,6 +193,34 @@ const addCategory = () => {
 
 const removeCategory = (idx) => {
   settings.value.featuredCategories.splice(idx, 1)
+}
+
+const uploadImage = async (event, callback) => {
+  const file = event.target.files[0]
+  if (!file) return
+
+  try {
+    uploading.value = true
+    const formData = new FormData()
+    formData.append('file', file)
+
+    const res = await GATEWAY_ENDPOINT.post('/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    
+    if (res.data?.url) {
+      callback(res.data.url)
+      toast.add({ title: 'Success', description: 'Image uploaded successfully!', color: 'green' })
+    }
+  } catch (error) {
+    console.error('Upload failed:', error)
+    toast.add({ title: 'Error', description: 'Failed to upload image.', color: 'red' })
+  } finally {
+    uploading.value = false
+    event.target.value = '' // reset file input
+  }
 }
 
 onMounted(() => {
