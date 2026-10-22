@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class="flex justify-between items-center mb-8">
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-8">
       <div>
         <h1 class="text-2xl font-bold">Product Policies</h1>
         <p class="text-gray-500 font-medium">Manage product details, shipping and returns configurations</p>
       </div>
-      <UButton color="primary" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-5 rounded-full" @click="openAddModal">Add Policy</UButton>
+      <UButton color="primary" class="whitespace-nowrap bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-5 rounded-full" @click="openAddModal">Add Policy</UButton>
     </div>
 
     <div class="mb-4">
@@ -15,14 +15,27 @@
     </div>
 
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-      <div class="flex px-6 py-4 border-b border-gray-200 bg-gray-50">
-        <CustomInput v-model="q" placeholder="Search policies..." class="w-72">
+      <div class="flex px-4 sm:px-6 py-4 border-b border-gray-200 bg-gray-50">
+        <CustomInput v-model="q" placeholder="Search policies..." class="w-full sm:w-72">
           <template #leading>
             <Search class="w-4 h-4 text-gray-400" />
           </template>
         </CustomInput>
       </div>
-      <div class="overflow-x-auto">
+      <div class="md:hidden divide-y divide-gray-100">
+        <div v-for="row in filteredRows" :key="row._id" class="p-4">
+          <p class="font-bold text-gray-900">{{ row.name }}</p>
+          <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{ row.productDetails || 'No product details' }}</p>
+          <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{ row.shippingAndReturns || 'No shipping information' }}</p>
+          <div class="flex gap-2 mt-3">
+            <button @click="openEditModal(row)" class="flex-1 border border-emerald-200 bg-emerald-50 text-emerald-700 font-bold text-xs py-2 rounded-full">Edit</button>
+            <button @click="confirmDelete(row._id)" class="flex-1 border border-red-200 bg-red-50 text-red-600 font-bold text-xs py-2 rounded-full">Delete</button>
+          </div>
+        </div>
+        <div v-if="!loading && filteredRows.length === 0" class="p-10 text-center text-gray-500 text-sm font-medium">No policies found.</div>
+      </div>
+
+      <div class="hidden md:block overflow-x-auto">
         <UTable :columns="columns" :data="filteredRows" :loading="loading" class="min-w-[800px]" :ui="{ th: { base: 'bg-white text-gray-500 font-bold py-4 border-b border-gray-200' }, td: { base: 'py-4 border-b border-gray-100 last:border-0 text-gray-700 font-medium align-middle' } }">
           
           <template #name-cell="{ row: { original: row } }">

@@ -45,6 +45,26 @@ export const useCoupons = () => {
         }
     };
 
+    const updateCoupon = async (id: string, payload: any) => {
+        loading.value = true;
+        try {
+            const { data } = await couponsApi.updateCoupon(id, payload);
+            const index = coupons.value.findIndex(c => c._id === id);
+            if (index !== -1) coupons.value[index] = data;
+            toast.add({ title: 'Success', description: 'Coupon updated successfully', color: 'green' });
+            return data;
+        } catch (error: any) {
+            toast.add({
+                title: 'Error',
+                description: error?.response?.data?.message || 'Failed to update coupon',
+                color: 'red'
+            });
+            throw error;
+        } finally {
+            loading.value = false;
+        }
+    };
+
     const deleteCoupon = async (id: string) => {
         loading.value = true;
         try {
@@ -71,6 +91,7 @@ export const useCoupons = () => {
         coupons,
         fetchCoupons,
         createCoupon,
+        updateCoupon,
         deleteCoupon
     };
 };

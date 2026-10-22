@@ -131,7 +131,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { Save, Trash2, UploadCloud } from 'lucide-vue-next'
-import { GATEWAY_ENDPOINT } from '~/api_factory/axios.config'
+import { GATEWAY_ENDPOINT_WITH_AUTH } from '~/api_factory/axios.config'
+import { settingsApi } from '~/api_factory/modules/settings'
 
 const toast = useToast()
 
@@ -152,7 +153,7 @@ const settings = ref({
 const fetchSettings = async () => {
   try {
     loading.value = true
-    const res = await GATEWAY_ENDPOINT.get('/settings/storefront')
+    const res = await settingsApi.getStorefront()
     if (res.data) {
       settings.value = res.data
     }
@@ -166,7 +167,7 @@ const fetchSettings = async () => {
 const saveSettings = async () => {
   try {
     saving.value = true
-    await GATEWAY_ENDPOINT.put('/settings/storefront', settings.value)
+    await settingsApi.updateStorefront(settings.value)
     toast.add({ title: 'Success', description: 'Storefront settings updated successfully!', color: 'green' })
   } catch (error) {
     toast.add({ title: 'Error', description: 'Failed to update settings', color: 'red' })
@@ -204,7 +205,7 @@ const uploadImage = async (event, callback) => {
     const formData = new FormData()
     formData.append('file', file)
 
-    const res = await GATEWAY_ENDPOINT.post('/upload', formData, {
+    const res = await GATEWAY_ENDPOINT_WITH_AUTH.post('/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }

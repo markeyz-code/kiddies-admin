@@ -1,7 +1,7 @@
 <template>
   <div class="h-screen w-full flex bg-[#f0f2f5] font-sans">
     <!-- Sidebar -->
-    <div class="w-full md:w-[30%] lg:w-[350px] flex flex-col bg-white border-r border-gray-200 shrink-0 h-full">
+    <div :class="selectedSession ? 'hidden md:flex' : 'flex'" class="w-full md:w-[30%] lg:w-[350px] flex-col bg-white border-r border-gray-200 shrink-0 h-full">
       <!-- Sidebar Header -->
       <div class="h-16 bg-[#f0f2f5] flex items-center justify-between px-4 border-b border-gray-200 shrink-0">
         <div class="flex items-center space-x-3">
@@ -22,7 +22,7 @@
       <div class="p-2 border-b border-gray-200 bg-white">
         <div class="bg-[#f0f2f5] rounded-lg flex items-center px-3 py-1.5">
           <Search class="w-4 h-4 text-gray-500 mr-3 shrink-0" />
-          <input type="text" placeholder="Search or start new chat" class="bg-transparent border-none focus:outline-none text-sm w-full placeholder-gray-500" />
+          <input v-model="chatSearch" type="text" placeholder="Search conversations..." class="bg-transparent border-none focus:outline-none text-sm w-full placeholder-gray-500" />
         </div>
       </div>
 
@@ -31,12 +31,12 @@
         <div v-if="loading" class="flex justify-center p-8 text-emerald-500">
           <LoaderCircle class="w-6 h-6 animate-spin" />
         </div>
-        <div v-else-if="sessions.length === 0" class="p-8 text-center text-gray-400 text-sm">
-          No active conversations
+        <div v-else-if="filteredSessions.length === 0" class="p-8 text-center text-gray-400 text-sm">
+          {{ sessions.length ? 'No conversations match your search' : 'No active conversations' }}
         </div>
         <div 
           v-else
-          v-for="session in sessions" 
+          v-for="session in filteredSessions" 
           :key="session._id"
           @click="selectSession(session._id)"
           :class="['flex items-center px-3 py-3 cursor-pointer hover:bg-[#f5f6f6]', selectedSession === session._id ? 'bg-[#f0f2f5]' : '']"
@@ -56,13 +56,16 @@
     </div>
 
     <!-- Main Chat Area -->
-    <div class="flex-1 hidden md:flex flex-col relative bg-[#efeae2] h-full">
+    <div :class="selectedSession ? 'flex' : 'hidden md:flex'" class="flex-1 flex-col relative bg-[#efeae2] h-full">
       <!-- Background pattern -->
       <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' viewBox=\'0 0 100 100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z\' fill=\'%23000000\' fill-opacity=\'0.2\' fill-rule=\'evenodd\'/%3E%3C/svg%3E'); z-index: 0;"></div>
 
       <template v-if="selectedSession">
         <!-- Chat Header -->
         <div class="h-16 bg-[#f0f2f5] flex items-center px-4 border-b border-gray-200 shrink-0 z-10">
+          <button @click="selectedSession = null" aria-label="Back to conversations" class="md:hidden text-gray-500 hover:text-gray-700 mr-2 p-1">
+            <ArrowLeft class="w-5 h-5" />
+          </button>
           <div class="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold mr-3">
             {{ (activeSessionDetails?.customerName || 'C')[0].toUpperCase() }}
           </div>
@@ -90,7 +93,7 @@
               <template v-else>
                 <span class="break-words">{{ msg.message }}</span>
               </template>
-              <span class="text-[10px] text-gray-400 float-right mt-2 ml-3">12:00</span>
+              <span class="text-[10px] text-gray-400 float-right mt-2 ml-3">{{ new Date(msg.createdAt || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}</span>
             </div>
           </div>
         </div>
@@ -130,8 +133,8 @@
       <!-- Empty State -->
       <div v-else class="flex-1 flex flex-col items-center justify-center text-gray-500 z-10 bg-[#f0f2f5] border-l border-gray-200">
         <div class="max-w-md text-center">
-          <h2 class="text-3xl font-light text-gray-700 mb-4">JasmarKids Web</h2>
-          <p class="text-sm text-gray-500 mb-8">Send and receive messages without keeping your phone online.<br/>Use WhatsApp on up to 4 linked devices and 1 phone at the same time.</p>
+          <h2 class="text-2xl md:text-3xl font-light text-gray-700 mb-4">JasmarKids Customer Chat</h2>
+          <p class="text-sm text-gray-500 mb-8">Select a conversation on the left to view messages and reply to your customers in real time.</p>
           <div class="flex items-center justify-center space-x-2 text-xs text-gray-400">
             <Lock class="w-3 h-3" />
             <span>End-to-end encrypted</span>
@@ -143,7 +146,7 @@
 </template>
 
 <script setup>
-import { rawBaseUrl } from '@/api_factory/axios.config'
+import { rawBaseUrl, GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { io } from 'socket.io-client'
 import { ArrowLeft, MessageSquare, MoreVertical, Search, LoaderCircle, Smile, Paperclip, Mic, Send, Lock } from 'lucide-vue-next'
@@ -154,6 +157,16 @@ definePageMeta({ layout: 'chat' })
 
 const loading = ref(true)
 const sessions = ref([])
+const chatSearch = ref('')
+
+const filteredSessions = computed(() => {
+  const term = chatSearch.value.trim().toLowerCase()
+  if (!term) return sessions.value
+  return sessions.value.filter((session) =>
+    [session.customerName, session.customerEmail, session.lastMessage]
+      .join(' ').toLowerCase().includes(term)
+  )
+})
 const selectedSession = ref(null)
 const activeMessages = ref([])
 const newMessage = ref('')
@@ -169,8 +182,8 @@ const activeSessionDetails = computed(() => {
 
 const fetchSessions = async () => {
   try {
-    const res = await fetch(`${rawBaseUrl}/chat/sessions`)
-    sessions.value = await res.json()
+    const { data } = await GATEWAY_ENDPOINT_WITH_AUTH.get('/chat/sessions')
+    sessions.value = data
   } catch (err) {
     console.error('Error fetching sessions:', err)
   } finally {
@@ -187,8 +200,8 @@ const selectSession = async (sessionId) => {
   }
 
   try {
-    const res = await fetch(`${rawBaseUrl}/chat/session/${sessionId}`)
-    activeMessages.value = await res.json()
+    const { data } = await GATEWAY_ENDPOINT_WITH_AUTH.get(`/chat/session/${sessionId}`)
+    activeMessages.value = data
     scrollToBottom()
   } catch (err) {
     console.error('Error fetching session messages:', err)

@@ -1,102 +1,69 @@
 import { ref } from 'vue'
-import { rawBaseUrl } from '@/api_factory/axios.config'
+import { categoriesApi } from '@/api_factory/modules/categories'
+import { useToast } from '#imports'
 
 export const useCategories = () => {
-  const categories = ref([])
+  const categories = ref<any[]>([])
   const loading = ref(false)
-  const error = ref(null)
-  
-  // API base URL
-  const API_URL = `${rawBaseUrl}/categories`
+  const error = ref<string | null>(null)
 
   const fetchCategories = async () => {
     loading.value = true
     error.value = null
     try {
-      const response = await fetch(API_URL)
-      if (!response.ok) throw new Error('Failed to fetch categories')
-      const data = await response.json()
+      const { data } = await categoriesApi.getCategories()
       categories.value = data
-    } catch (err) {
-      error.value = err.message
+      return data
+    } catch (err: any) {
+      error.value = err?.response?.data?.message || err.message
       console.error(err)
+      return []
     } finally {
       loading.value = false
     }
   }
 
-  const createCategory = async (categoryData) => {
+  const createCategory = async (categoryData: any) => {
     loading.value = true
-    error.value = null
     try {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(categoryData)
-      })
-      if (!response.ok) throw new Error('Failed to create category')
-      const newCategory = await response.json()
-      categories.value.push(newCategory)
-      return newCategory
-    } catch (err) {
-      error.value = err.message
-      console.error(err)
+      const { data } = await categoriesApi.createCategory(categoryData)
+      categories.value.push(data)
+      return data
+    } catch (err: any) {
+      error.value = err?.response?.data?.message || err.message
       throw err
     } finally {
       loading.value = false
     }
   }
 
-  const updateCategory = async (id, categoryData) => {
+  const updateCategory = async (id: string, categoryData: any) => {
     loading.value = true
-    error.value = null
     try {
-      const response = await fetch(`${API_URL}/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(categoryData)
-      })
-      if (!response.ok) throw new Error('Failed to update category')
-      const updatedCategory = await response.json()
-      const index = categories.value.findIndex(c => c._id === id)
-      if (index !== -1) {
-        categories.value[index] = updatedCategory
-      }
-      return updatedCategory
-    } catch (err) {
-      error.value = err.message
-      console.error(err)
+      const { data } = await categoriesApi.updateCategory(id, categoryData)
+      const index = categories.value.findIndex((c) => c._id === id)
+      if (index !== -1) categories.value[index] = data
+      return data
+    } catch (err: any) {
+      error.value = err?.response?.data?.message || err.message
       throw err
     } finally {
       loading.value = false
     }
   }
 
-  const deleteCategory = async (id) => {
+  const deleteCategory = async (id: string) => {
     loading.value = true
-    error.value = null
     try {
-      const response = await fetch(`${API_URL}/${id}`, {
-        method: 'DELETE'
-      })
-      if (!response.ok) throw new Error('Failed to delete category')
-      categories.value = categories.value.filter(c => c._id !== id)
-    } catch (err) {
-      error.value = err.message
-      console.error(err)
+      await categoriesApi.deleteCategory(id)
+      categories.value = categories.value.filter((c) => c._id !== id)
+    } catch (err: any) {
+      error.value = err?.response?.data?.message || err.message
       throw err
     } finally {
       loading.value = false
     }
   }
 
-  return {
-    categories,
-    loading,
-    error,
-    fetchCategories,
-    createCategory,
-    updateCategory,
-    deleteCategory
-  }
+  return { categories, loading, error, fetchCategories, createCategory, updateCategory, deleteCategory }
 }

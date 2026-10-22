@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div class="flex justify-between items-center mb-8">
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-8">
       <div>
         <h1 class="text-2xl font-bold">Coupons</h1>
         <p class="text-gray-500 font-medium">Manage discount coupons for your store</p>
       </div>
       <button 
-        @click="isAddModalOpen = true; form = { code: '', discountType: 'percentage', discountValue: 0, isActive: true }"
-        class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-5 rounded-full transition-colors text-sm shadow-sm flex items-center"
+        @click="openCreate"
+        class="whitespace-nowrap bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-5 rounded-full transition-colors text-sm shadow-sm flex items-center justify-center"
       >
         Add Coupon
       </button>
@@ -21,15 +21,37 @@
     </div>
 
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-      <div class="flex px-6 py-4 border-b border-gray-200 bg-gray-50">
-        <CustomInput v-model="q" placeholder="Search coupons..." class="w-72">
+      <div class="flex px-4 sm:px-6 py-4 border-b border-gray-200 bg-gray-50">
+        <CustomInput v-model="q" placeholder="Search coupons..." class="w-full sm:w-72">
           <template #leading>
             <Search class="w-4 h-4 text-gray-400" />
           </template>
         </CustomInput>
       </div>
       
-      <div class="overflow-x-auto">
+      <!-- Mobile cards -->
+      <div class="md:hidden divide-y divide-gray-100">
+        <div v-for="row in filteredRows" :key="row._id" class="p-4">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <p class="font-black tracking-wider text-gray-900">{{ row.code }}</p>
+              <p class="text-xs text-gray-500 mt-0.5">{{ row.description || 'Store coupon' }}</p>
+            </div>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold" :class="row.isActive ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-600'">{{ row.isActive ? 'Active' : 'Inactive' }}</span>
+          </div>
+          <p class="mt-2 text-sm font-bold text-gray-800">
+            <span v-if="row.discountType === 'percentage'">{{ row.discountValue }}% off</span>
+            <span v-else>${{ row.discountValue?.toFixed(2) || '0.00' }} off</span>
+          </p>
+          <div class="flex gap-2 mt-3">
+            <button @click="openEdit(row)" class="flex-1 inline-flex items-center justify-center gap-1.5 border border-emerald-200 bg-emerald-50 text-emerald-700 font-bold text-xs py-2 rounded-full"><Pencil class="w-3.5 h-3.5" /> Edit</button>
+            <button @click="handleDelete(row._id)" class="flex-1 inline-flex items-center justify-center gap-1.5 border border-red-200 bg-red-50 text-red-600 font-bold text-xs py-2 rounded-full"><Trash2 class="w-3.5 h-3.5" /> Delete</button>
+          </div>
+        </div>
+        <div v-if="!loading && filteredRows.length === 0" class="p-10 text-center text-gray-500 text-sm font-medium">No coupons found.</div>
+      </div>
+
+      <div class="hidden md:block overflow-x-auto">
         <UTable :columns="columns" :data="filteredRows" :loading="loading" class="min-w-[800px]" :ui="{ th: { base: 'bg-white text-gray-500 font-bold py-4 border-b border-gray-200' }, td: { base: 'py-4 border-b border-gray-100 last:border-0 text-gray-700 font-medium align-middle' } }">
           
           <template #code-cell="{ row: { original: row } }">
@@ -41,7 +63,7 @@
           <template #discount-cell="{ row: { original: row } }">
             <span class="font-semibold text-gray-800">
               <span v-if="row.discountType === 'percentage'">{{ row.discountValue }}%</span>
-              <span v-else>₦{{ row.discountValue?.toFixed(2) || '0.00' }}</span>
+              <span v-else>${{ row.discountValue?.toFixed(2) || '0.00' }}</span>
             </span>
             <span class="text-xs text-gray-500 ml-1">Off</span>
           </template>
@@ -67,6 +89,9 @@
           
           <template #actions-cell="{ row: { original: row } }">
             <div class="flex items-center space-x-2">
+              <button class="text-emerald-700 hover:bg-emerald-50 p-1.5 rounded-lg transition-colors" @click="openEdit(row)" title="Edit">
+                <Pencil class="w-4 h-4" />
+              </button>
               <button class="text-red-600 hover:bg-red-50 p-1.5 rounded-lg transition-colors" @click="handleDelete(row._id)" title="Delete">
                 <Trash2 class="w-4 h-4" />
               </button>
@@ -95,7 +120,7 @@
     />
 
     <!-- Add Coupon Modal -->
-    <CustomModal v-model="isAddModalOpen" title="Add New Coupon" maxWidth="2xl">
+    <CustomModal v-model="isAddModalOpen" :title="editingId ? 'Edit Coupon' : 'Add New Coupon'" maxWidth="2xl">
       <form @submit.prevent="handleSubmit" class="space-y-5">
         <CustomInput 
           v-model="form.code" 
@@ -111,21 +136,30 @@
         <CustomSelect 
           v-model="form.discountType" 
           label="Discount Type" 
-          :options="[{ label: 'Percentage (%)', value: 'percentage' }, { label: 'Fixed Amount (₦)', value: 'fixed' }]" 
+          :options="[{ label: 'Percentage (%)', value: 'percentage' }, { label: 'Fixed Amount ($)', value: 'fixed' }]" 
         />
         
         <CustomInput 
-          v-model="form.discountValue" 
+          v-model.number="form.discountValue" 
           type="number"
           label="Discount Value" 
           placeholder="Value" 
           required
         />
+
+        <CustomInput v-model="form.description" label="Description (optional)" placeholder="e.g. 20% off fall collection" />
+
+        <div class="grid grid-cols-2 gap-5">
+          <CustomInput v-model.number="form.minPurchaseAmount" type="number" label="Minimum Purchase ($)" placeholder="0" />
+          <CustomInput v-model.number="form.usageLimit" type="number" label="Usage Limit (0 = unlimited)" placeholder="0" />
+        </div>
+
+        <CustomInput v-model="form.expiryDate" type="date" label="Expiry Date (optional)" />
         
         <CustomSelect 
           v-model="form.isActive" 
           label="Status" 
-          :options="[{ label: 'Active', value: true }, { label: 'Inactive', value: false }]" 
+          :options="[{ label: 'Active', value: 'true' }, { label: 'Inactive', value: 'false' }]" 
         />
 
         <div class="flex justify-end space-x-3 pt-4">
@@ -141,7 +175,7 @@
             class="px-5 py-2.5 text-sm font-bold text-white bg-emerald-700 hover:bg-emerald-800 rounded-full transition-colors flex items-center justify-center min-w-[120px]"
             :disabled="loading"
           >
-            <span v-if="!loading">Save Coupon</span>
+            <span v-if="!loading">{{ editingId ? 'Update Coupon' : 'Save Coupon' }}</span>
             <LoaderCircle v-else class="w-5 h-5 animate-spin" />
           </button>
         </div>
@@ -150,16 +184,16 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { Tag, LoaderCircle, Inbox, Search, Trash2 } from 'lucide-vue-next'
+import { Tag, LoaderCircle, Inbox, Search, Trash2, Pencil } from 'lucide-vue-next'
 import { useCoupons } from '@/composables/modules/coupons/useCoupons'
 
 // definePageMeta({
 //   layout: 'dashboard'
 // });
 
-const { loading, coupons, fetchCoupons, createCoupon, deleteCoupon } = useCoupons();
+const { loading, coupons, fetchCoupons, createCoupon, updateCoupon, deleteCoupon } = useCoupons();
 const toast = useToast()
 
 const q = ref('')
@@ -167,12 +201,51 @@ const isAddModalOpen = ref(false)
 const showDeleteConfirm = ref(false)
 const couponToDelete = ref(null)
 
+const editingId = ref<string | null>(null)
 const form = ref({
   code: '',
+  description: '',
   discountType: 'percentage',
   discountValue: 0,
-  isActive: true
+  minPurchaseAmount: 0,
+  usageLimit: 0,
+  expiryDate: '',
+  isActive: 'true'
 })
+
+const resetForm = () => {
+  editingId.value = null
+  form.value = {
+    code: '',
+    description: '',
+    discountType: 'percentage',
+    discountValue: 0,
+    minPurchaseAmount: 0,
+    usageLimit: 0,
+    expiryDate: '',
+    isActive: 'true'
+  }
+}
+
+const openCreate = () => {
+  resetForm()
+  isAddModalOpen.value = true
+}
+
+const openEdit = (coupon: any) => {
+  editingId.value = coupon._id
+  form.value = {
+    code: coupon.code,
+    description: coupon.description || '',
+    discountType: coupon.discountType,
+    discountValue: coupon.discountValue,
+    minPurchaseAmount: coupon.minPurchaseAmount || 0,
+    usageLimit: coupon.usageLimit || 0,
+    expiryDate: coupon.expiryDate ? String(coupon.expiryDate).slice(0, 10) : '',
+    isActive: coupon.isActive === false ? 'false' : 'true'
+  }
+  isAddModalOpen.value = true
+}
 
 onMounted(() => {
   fetchCoupons()
@@ -196,11 +269,15 @@ const filteredRows = computed(() => {
 
 const handleSubmit = async () => {
   try {
-    await createCoupon(form.value)
+    const payload: any = { ...form.value }
+    if (!payload.expiryDate) delete payload.expiryDate
+    if (editingId.value) {
+      await updateCoupon(editingId.value, payload)
+    } else {
+      await createCoupon(payload)
+    }
     isAddModalOpen.value = false
-    form.value = { code: '', discountType: 'percentage', discountValue: 0, isActive: true }
-    // Fetch coupons after creation if needed
-    // await fetchCoupons()
+    resetForm()
   } catch (error) {
     // Error is handled in the composable
   }

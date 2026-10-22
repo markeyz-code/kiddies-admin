@@ -8,35 +8,30 @@ export const useAuth = () => {
     const setCookie = (name: string, value: string, maxAgeDays: number) => {
         if (typeof document === 'undefined') return;
         document.cookie = `${name}=${value}; path=/; max-age=${maxAgeDays * 86400}; SameSite=Lax`;
+        try { localStorage.setItem(name, value); } catch {}
     };
 
     const login = async (payload: any) => {
         loading.value = true;
         try {
             const { data } = await authApi.login(payload);
-            user.value = data.user;
-            
-            if (data.accessToken) {
-                setCookie('adminAccessToken', data.accessToken, 7);
+            if (!data?.accessToken || data?.user?.role !== 'admin') {
+                throw new Error('This account does not have administrator access');
             }
+            user.value = data.user;
+
+            setCookie('adminAccessToken', data.accessToken, 7);
             if (data.refreshToken) {
                 setCookie('adminRefreshToken', data.refreshToken, 30);
             }
 
-            console.log('Login successful, attempting redirect to dashboard');
-            // REDIRECT FIRST - this is the most important action
-            try {
-                if (typeof window !== 'undefined') {
-                    window.location.href = '/dashboard';
-                }
-            } catch (err) {
-                console.error('Redirect failed', err);
-            }
+            await navigateTo('/dashboard');
             return data;
         } catch (error: any) {
-            console.error('Login error:', error);
+            const message = error?.response?.data?.message || error?.message || 'Invalid credentials';
             const toast = useToast();
-            toast.add({ title: 'Login Failed', description: error?.response?.data?.message || 'Invalid credentials', color: 'error' });
+            toast.add({ title: 'Login Failed', description: message, color: 'error' });
+            return null;
         } finally {
             loading.value = false;
         }
@@ -50,6 +45,7 @@ export const useAuth = () => {
             return data;
         } catch (error: any) {
             console.error('Error fetching profile:', error);
+            return null;
         } finally {
             loading.value = false;
         }
@@ -93,11 +89,16 @@ export const useAuth = () => {
         }
     };
 
-    const logout = () => {
+    const logout = async () => {
+        try { await authApi.logout(); } catch {}
         if (typeof document !== 'undefined') {
             document.cookie = 'adminAccessToken=; Max-Age=0; path=/';
             document.cookie = 'adminRefreshToken=; Max-Age=0; path=/';
-            window.location.href = '/login';
+            try {
+                localStorage.removeItem('adminAccessToken');
+                localStorage.removeItem('adminRefreshToken');
+            } catch {}
+            await navigateTo('/login');
         }
     };
 

@@ -28,12 +28,12 @@
               <h3 class="font-bold text-gray-500 text-sm">Total Revenue</h3>
               <DollarSign class="w-5 h-5 text-gray-400" />
             </div>
-            <div class="text-xl sm:text-3xl font-bold text-gray-900 mb-2" v-if="!loading">₦{{ (analytics?.totalRevenue || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</div>
+            <div class="text-xl sm:text-3xl font-bold text-gray-900 mb-2" v-if="!loading">${{ (analytics?.totalRevenue || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</div>
             <div v-else class="h-9 w-32 bg-gray-100 rounded animate-pulse mb-2"></div>
           </div>
           <div class="flex items-center text-xs font-bold mt-2">
-            <span class="text-emerald-600 flex items-center bg-emerald-50 px-2 py-0.5 rounded mr-2"><ArrowUp class="w-3 h-3 mr-1"/> 12.5%</span>
-            <span class="text-gray-400">vs last month</span>
+            <span class="text-emerald-600 flex items-center bg-emerald-50 px-2 py-0.5 rounded mr-2">Paid</span>
+            <span class="text-gray-400">${{ (analytics?.paidRevenue || 0).toLocaleString(undefined, { maximumFractionDigits: 0 }) }}</span>
           </div>
         </div>
 
@@ -43,12 +43,12 @@
               <h3 class="font-bold text-gray-500 text-sm">Estimated Profit</h3>
               <TrendingUp class="w-5 h-5 text-gray-400" />
             </div>
-            <div class="text-xl sm:text-3xl font-bold text-emerald-700 mb-2" v-if="!loading">₦{{ (analytics?.totalProfit || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</div>
+            <div class="text-xl sm:text-3xl font-bold text-emerald-700 mb-2" v-if="!loading">${{ (analytics?.totalProfit || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</div>
             <div v-else class="h-9 w-32 bg-gray-100 rounded animate-pulse mb-2"></div>
           </div>
           <div class="flex items-center text-xs font-bold mt-2">
-            <span class="text-emerald-600 flex items-center bg-emerald-50 px-2 py-0.5 rounded mr-2"><ArrowUp class="w-3 h-3 mr-1"/> 15.2%</span>
-            <span class="text-gray-400">vs last month</span>
+            <span class="text-emerald-600 flex items-center bg-emerald-50 px-2 py-0.5 rounded mr-2">Margin</span>
+            <span class="text-gray-400">estimated at 35%</span>
           </div>
         </div>
 
@@ -62,8 +62,8 @@
             <div v-else class="h-9 w-20 bg-gray-100 rounded animate-pulse mb-2"></div>
           </div>
           <div class="flex items-center text-xs font-bold mt-2">
-            <span class="text-emerald-600 flex items-center bg-emerald-50 px-2 py-0.5 rounded mr-2"><ArrowUp class="w-3 h-3 mr-1"/> 8.3%</span>
-            <span class="text-gray-400">vs last month</span>
+            <span class="text-amber-600 flex items-center bg-amber-50 px-2 py-0.5 rounded mr-2">Pending</span>
+            <span class="text-gray-400">{{ analytics?.statusBreakdown?.Pending || 0 }} orders</span>
           </div>
         </div>
 
@@ -73,12 +73,12 @@
               <h3 class="font-bold text-gray-500 text-sm">Avg Order Value</h3>
               <BarChart3 class="w-5 h-5 text-gray-400" />
             </div>
-            <div class="text-xl sm:text-3xl font-bold text-gray-900 mb-2" v-if="!loading">₦{{ (analytics?.averageOrderValue || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</div>
+            <div class="text-xl sm:text-3xl font-bold text-gray-900 mb-2" v-if="!loading">${{ (analytics?.averageOrderValue || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</div>
             <div v-else class="h-9 w-32 bg-gray-100 rounded animate-pulse mb-2"></div>
           </div>
           <div class="flex items-center text-xs font-bold mt-2">
-            <span class="text-emerald-600 flex items-center bg-emerald-50 px-2 py-0.5 rounded mr-2"><ArrowUp class="w-3 h-3 mr-1"/> 5.7%</span>
-            <span class="text-gray-400">vs last month</span>
+            <span class="text-emerald-600 flex items-center bg-emerald-50 px-2 py-0.5 rounded mr-2">Delivered</span>
+            <span class="text-gray-400">{{ (analytics?.statusBreakdown?.Delivered || 0) + (analytics?.statusBreakdown?.Shipped || 0) }} fulfilled</span>
           </div>
         </div>
       </div>
@@ -105,7 +105,7 @@
               </div>
               <div class="text-right">
                 <p class="font-bold text-gray-900 text-sm">{{ product.quantity }} sold</p>
-                <p class="text-xs text-emerald-600 font-medium">₦{{ product.revenue.toLocaleString() }}</p>
+                <p class="text-xs text-emerald-600 font-medium">${{ product.revenue.toLocaleString() }}</p>
               </div>
             </li>
             <li v-if="topProducts.length === 0" class="p-8 text-center text-gray-500 font-medium text-sm">
@@ -164,7 +164,22 @@
       </div>
 
       <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <div class="overflow-x-auto">
+        <div class="md:hidden divide-y divide-gray-100">
+          <NuxtLink v-for="row in recentTransactions" :key="row._id" to="/dashboard/orders" class="block p-4 hover:bg-gray-50">
+            <div class="flex justify-between items-start gap-3">
+              <div>
+                <p class="font-bold text-emerald-700">{{ row.orderNumber }}</p>
+                <p class="text-xs text-gray-500">{{ new Date(row.createdAt).toLocaleDateString() }}</p>
+              </div>
+              <p class="font-bold text-gray-900">${{ (row.totalAmount || 0).toFixed(2) }}</p>
+            </div>
+            <p class="mt-2 text-sm font-semibold text-gray-900">{{ row.customer?.firstName }} {{ row.customer?.lastName }}</p>
+            <p class="text-xs text-gray-500 truncate">{{ row.customer?.email }}</p>
+            <span class="inline-block mt-2 px-2.5 py-1 rounded-full text-[10px] font-bold" :class="getStatusClass(row.status)">{{ row.status }}</span>
+          </NuxtLink>
+          <p v-if="!loading && recentTransactions.length === 0" class="p-8 text-center text-sm text-gray-500">No recent transactions found.</p>
+        </div>
+        <div class="hidden md:block overflow-x-auto">
           <UTable :columns="transactionColumns" :data="recentTransactions" :loading="loading" class="min-w-[800px]" :ui="{ th: { base: 'bg-gray-50 text-gray-500 font-bold py-4 border-b border-gray-200' }, td: { base: 'py-4 border-b border-gray-100 last:border-0 text-gray-700 font-medium' } }">
             <template #order-cell="{ row: { original: row } }">
               <span class="font-bold text-emerald-700">{{ row.orderNumber }}</span>
@@ -176,7 +191,7 @@
               </div>
             </template>
             <template #amount-cell="{ row: { original: row } }">
-              <span class="font-bold text-gray-900">₦{{ row.totalAmount.toLocaleString() }}</span>
+              <span class="font-bold text-gray-900">${{ row.totalAmount.toLocaleString() }}</span>
             </template>
             <template #status-cell="{ row: { original: row } }">
               <span class="px-2.5 py-1 rounded-full text-xs font-bold" :class="getStatusClass(row.status)">
@@ -209,7 +224,18 @@
       </div>
 
       <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <div class="overflow-x-auto">
+        <div class="md:hidden divide-y divide-gray-100">
+          <div v-for="(row, idx) in recentActivities" :key="idx" class="p-4">
+            <div class="flex items-start justify-between gap-3">
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold" :class="getActionClass(row.action)">{{ formatAction(row.action) }}</span>
+              <span class="text-[10px] text-gray-400 whitespace-nowrap">{{ row.timestamp }}</span>
+            </div>
+            <p class="mt-2 text-sm text-gray-700 leading-snug">{{ row.details }}</p>
+            <p class="mt-1 text-xs text-gray-500">{{ row.user }}</p>
+          </div>
+          <p v-if="!loading && recentActivities.length === 0" class="p-8 text-center text-sm text-gray-500">No recent activity found.</p>
+        </div>
+        <div class="hidden md:block overflow-x-auto">
           <UTable :columns="activityColumns" :data="recentActivities" :loading="loading" class="min-w-[800px]" :ui="{ th: { base: 'bg-gray-50 text-gray-500 font-bold py-4 border-b border-gray-200' }, td: { base: 'py-4 border-b border-gray-100 last:border-0 text-gray-700 font-medium' } }">
             
             <template #action-cell="{ row: { original: row } }">
@@ -254,7 +280,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { LoaderCircle, Inbox, DollarSign, Package, BarChart3, ArrowUp, TrendingUp, Star, MessageSquareText, MessageCircle, Users, PackagePlus, ShoppingCart, MessageSquare, ArrowRight } from 'lucide-vue-next'
+import { LoaderCircle, Inbox, DollarSign, Package, BarChart3 , TrendingUp, Star, MessageSquareText, MessageCircle, Users, PackagePlus, ShoppingCart, MessageSquare, ArrowRight } from 'lucide-vue-next'
 import { useOrders } from '@/composables/modules/orders/useOrders'
 import { GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
 
@@ -318,21 +344,25 @@ const getStatusClass = (status) => {
 
 const getActionClass = (action) => {
   if (!action) return 'bg-gray-100 text-gray-700'
-  if (action.includes('Created')) return 'bg-emerald-100 text-emerald-700'
-  if (action.includes('Updated')) return 'bg-blue-100 text-blue-700'
-  if (action.includes('Deleted') || action.includes('Cancelled')) return 'bg-red-100 text-red-700'
+  const normalized = action.toLowerCase()
+  if (normalized.includes('created')) return 'bg-emerald-100 text-emerald-700'
+  if (normalized.includes('updated')) return 'bg-blue-100 text-blue-700'
+  if (normalized.includes('deleted') || normalized.includes('cancelled')) return 'bg-red-100 text-red-700'
   return 'bg-gray-100 text-gray-700'
 }
 
 const formatAction = (action) => {
-  return action || 'Unknown'
+  if (!action) return 'Unknown'
+  return String(action).replace(/[._]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
 }
 
 const recentActivities = computed(() => {
   if (!analytics.value || !analytics.value.recentActivities) return []
   return analytics.value.recentActivities.map(log => {
     let detailsString = '-'
-    if (log.details) {
+    if (typeof log.details === 'string') {
+      detailsString = log.details
+    } else if (log.details && typeof log.details === 'object') {
       if (log.details.productName) {
         detailsString = `${log.details.productName} in ${log.details.category || 'catalog'}`
       } else if (log.details.orderId) {
@@ -354,11 +384,46 @@ const recentActivities = computed(() => {
   })
 })
 
-const generateReport = () => {
-  toast.add({
-    title: 'Report Generated',
-    description: 'Dashboard report has been sent to your email.',
-    color: 'emerald'
-  })
+const generateReport = async () => {
+  try {
+    const { data } = await GATEWAY_ENDPOINT_WITH_AUTH.get('/orders', { params: { limit: 200 } })
+    const orders = data.orders || []
+    const header = ['Order Number', 'Date', 'Customer', 'Email', 'Status', 'Payment Status', 'Payment Method', 'Subtotal', 'Shipping', 'Tax', 'Discount', 'Total', 'Currency']
+    const rows = orders.map((order) => [
+      order.orderNumber,
+      new Date(order.createdAt).toISOString(),
+      `${order.customer?.firstName || ''} ${order.customer?.lastName || ''}`.trim(),
+      order.customer?.email || '',
+      order.status,
+      order.paymentStatus,
+      order.paymentMethod,
+      order.subtotal,
+      order.shippingFee,
+      order.tax,
+      order.discountAmount || 0,
+      order.totalAmount,
+      order.currency || 'USD'
+    ])
+    const escape = (value) => `"${String(value ?? '').replace(/"/g, '""')}"`
+    const csv = [header, ...rows].map((row) => row.map(escape).join(',')).join('\n')
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `jasmarkids-orders-${new Date().toISOString().slice(0, 10)}.csv`
+    link.click()
+    URL.revokeObjectURL(url)
+    toast.add({
+      title: 'Report Downloaded',
+      description: `Exported ${orders.length} orders to CSV.`,
+      color: 'emerald'
+    })
+  } catch (error) {
+    toast.add({
+      title: 'Export Failed',
+      description: error?.response?.data?.message || 'Could not generate the report.',
+      color: 'red'
+    })
+  }
 }
 </script>

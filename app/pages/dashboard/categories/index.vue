@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div class="flex justify-between items-center mb-8">
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-8">
       <div>
         <h1 class="text-2xl font-bold">Categories</h1>
         <p class="text-gray-500 font-medium">Manage product categories</p>
       </div>
       <button 
         @click="isEditing = false; newCategory = { name: '', description: '', status: 'active' }; isAddModalOpen = true"
-        class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-5 rounded-full transition-colors text-sm shadow-sm flex items-center"
+        class="whitespace-nowrap bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-5 rounded-full transition-colors text-sm shadow-sm flex items-center justify-center"
       >
         Add Category
       </button>
@@ -21,14 +21,31 @@
     </div>
 
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-      <div class="flex px-6 py-4 border-b border-gray-200 bg-gray-50">
-        <CustomInput v-model="q" placeholder="Search categories..." class="w-72">
+      <div class="flex px-4 sm:px-6 py-4 border-b border-gray-200 bg-gray-50">
+        <CustomInput v-model="q" placeholder="Search categories..." class="w-full sm:w-72">
           <template #leading>
             <Search class="w-4 h-4 text-gray-400" />
           </template>
         </CustomInput>
       </div>
-      <div class="overflow-x-auto">
+      <div class="md:hidden divide-y divide-gray-100">
+        <div v-for="row in filteredRows" :key="row._id" class="p-4">
+          <div class="flex items-start justify-between gap-3">
+            <div class="min-w-0">
+              <p class="font-bold text-gray-900">{{ row.name }}</p>
+              <p class="text-xs text-gray-500 mt-0.5 line-clamp-2">{{ row.description || 'No description' }}</p>
+            </div>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold" :class="row.status === 'active' ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-600'">{{ row.status }}</span>
+          </div>
+          <div class="flex gap-2 mt-3">
+            <button @click="openEditModal(row)" class="flex-1 inline-flex items-center justify-center gap-1.5 border border-emerald-200 bg-emerald-50 text-emerald-700 font-bold text-xs py-2 rounded-full"><Pencil class="w-3.5 h-3.5" /> Edit</button>
+            <button @click="handleDelete(row._id)" class="flex-1 inline-flex items-center justify-center gap-1.5 border border-red-200 bg-red-50 text-red-600 font-bold text-xs py-2 rounded-full"><Trash2 class="w-3.5 h-3.5" /> Delete</button>
+          </div>
+        </div>
+        <div v-if="!loading && filteredRows.length === 0" class="p-10 text-center text-gray-500 text-sm font-medium">No categories found.</div>
+      </div>
+
+      <div class="hidden md:block overflow-x-auto">
         <UTable :columns="columns" :data="filteredRows" :loading="loading" class="min-w-[800px]" :ui="{ th: { base: 'bg-white text-gray-500 font-bold py-4 border-b border-gray-200' }, td: { base: 'py-4 border-b border-gray-100 last:border-0 text-gray-700 font-medium align-middle' } }">
           
           <template #name-cell="{ row: { original: row } }">
@@ -144,7 +161,7 @@ import { ref, computed, onMounted } from 'vue'
 import { Tag, LoaderCircle, Inbox, Search, Pencil, Trash2 } from 'lucide-vue-next'
 import { useCategories } from '@/composables/modules/categories/useCategories'
 
-const { categories, loading, fetchCategories, createCategory, deleteCategory } = useCategories()
+const { categories, loading, fetchCategories, createCategory, updateCategory, deleteCategory } = useCategories()
 const toast = useToast()
 
 const q = ref('')
@@ -183,7 +200,7 @@ const filteredRows = computed(() => {
 const handleSaveCategory = async () => {
   try {
     if (isEditing.value && categoryToEdit.value) {
-      await productsApi.updateCategory(categoryToEdit.value, newCategory.value)
+      await updateCategory(categoryToEdit.value, newCategory.value)
       toast.add({ title: 'Success', description: 'Category updated successfully', color: 'emerald' })
     } else {
       await createCategory(newCategory.value)

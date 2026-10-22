@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const rawBaseUrl = (import.meta.env.VITE_BASE_URL as string)
   || (import.meta.env.NUXT_PUBLIC_API_BASE as string)
-  || "http://127.0.0.1:3002"; // Backend was moved to 3002
+  || "http://localhost:3005";
 
 // Remove /api/v1 if it exists in the base url
 const $GATEWAY_ENDPOINT_WITHOUT_VERSION = rawBaseUrl.replace(/\/api\/v1\/?$/, '').replace(/\/+$/, '');
@@ -45,8 +45,33 @@ const getCookie = (name: string) => {
   if (typeof document === 'undefined') return null;
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop()?.split(';').shift();
-  return null;
+  if (parts.length === 2) {
+    const token = parts.pop()?.split(';').shift();
+    if (token) return token;
+  }
+  try {
+    return localStorage.getItem(name);
+  } catch {
+    return null;
+  }
+};
+
+const setCookie = (name: string, value: string, maxAgeDays: number) => {
+  if (typeof document === 'undefined') return;
+  document.cookie = `${name}=${value}; path=/; max-age=${maxAgeDays * 86400}; SameSite=Lax`;
+  try {
+    localStorage.setItem(name, value);
+  } catch {}
+};
+
+const clearAdminSession = () => {
+  if (typeof document === 'undefined') return;
+  document.cookie = 'adminAccessToken=; Max-Age=0; path=/';
+  document.cookie = 'adminRefreshToken=; Max-Age=0; path=/';
+  try {
+    localStorage.removeItem('adminAccessToken');
+    localStorage.removeItem('adminRefreshToken');
+  } catch {}
 };
 
 // Add request interceptor to inject token
@@ -86,15 +111,27 @@ GATEWAY_ENDPOINT_WITH_AUTH.interceptors.response.use(
         const refreshToken = getCookie('adminRefreshToken');
         if (!refreshToken) throw new Error('No refresh token');
 
-        // Optional: call your refresh endpoint if you have one
-        // For now, if no refresh endpoint, just throw to trigger logout
-        throw new Error('Refresh not implemented or failed');
+        const refreshResponse = await axios.post(
+          `${$GATEWAY_ENDPOINT}/auth/refresh`,
+          { refreshToken },
+          { headers: { 'x-refresh-token': refreshToken } }
+        );
+        const newAccessToken = refreshResponse.data?.accessToken;
+        if (!newAccessToken) throw new Error('No access token returned');
+
+        setCookie('adminAccessToken', newAccessToken, 7);
+        if (refreshResponse.data?.refreshToken) {
+          setCookie('adminRefreshToken', refreshResponse.data.refreshToken, 30);
+        }
+
+        processQueue(null, newAccessToken);
+        originalRequest.headers = originalRequest.headers || {};
+        originalRequest.headers['Authorization'] = 'Bearer ' + newAccessToken;
+        return GATEWAY_ENDPOINT_WITH_AUTH(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError, null);
-        if (typeof window !== 'undefined') {
-          // Clear cookies and redirect to login
-          document.cookie = 'adminAccessToken=; Max-Age=0; path=/';
-          document.cookie = 'adminRefreshToken=; Max-Age=0; path=/';
+        clearAdminSession();
+        if (typeof window !== 'undefined' && !window.location.pathname.startsWith('/login')) {
           window.location.href = '/login';
         }
         return Promise.reject(refreshError);
