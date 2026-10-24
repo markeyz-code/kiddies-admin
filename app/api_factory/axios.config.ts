@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const rawBaseUrl = (import.meta.env.VITE_BASE_URL as string)
   || (import.meta.env.NUXT_PUBLIC_API_BASE as string)
-  || "http://localhost:3005";
+  || "https://kidies-backend-7ald.onrender.com";
 
 // Remove /api/v1 if it exists in the base url
 const $GATEWAY_ENDPOINT_WITHOUT_VERSION = rawBaseUrl.replace(/\/api\/v1\/?$/, '').replace(/\/+$/, '');
