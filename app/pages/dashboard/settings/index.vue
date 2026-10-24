@@ -58,10 +58,10 @@
         </div>
         <div class="p-6 space-y-6">
           <div class="grid md:grid-cols-2 gap-6">
-            <CustomInput v-model="settings.phone" label="Phone Number" placeholder="+1 555 000 0000" />
-            <CustomInput v-model="settings.announcement" label="Announcement Bar Text" placeholder="Extra 40% Off..." />
+            <CustomInput v-model="settings.phone" label="Phone / WhatsApp Number" placeholder="+234 800 JASMARKIDS" />
+            <CustomInput v-model="settings.announcement" label="Announcement Bar Text" placeholder="Vibrant Outfits for African Kids • Nationwide Delivery" />
           </div>
-          <CustomInput v-model="settings.address" label="Store Address" placeholder="128 Maple Street, Brooklyn" />
+          <CustomInput v-model="settings.address" label="Boutique / Delivery Note" placeholder="Online Boutique — Nationwide Delivery Across Nigeria" />
           <div class="grid md:grid-cols-3 gap-6">
             <CustomInput v-model="settings.instagram" label="Instagram URL" placeholder="https://instagram.com/..." />
             <CustomInput v-model="settings.facebook" label="Facebook URL" placeholder="https://facebook.com/..." />

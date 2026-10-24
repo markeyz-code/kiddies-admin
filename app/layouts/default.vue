@@ -127,7 +127,7 @@ import { useAuth } from '@/composables/modules/auth/useAuth'
 
 const { logout } = useAuth()
 
-const storefrontUrl = import.meta.env.NUXT_PUBLIC_STOREFRONT_URL || 'http://localhost:3100'
+const { public: { storefrontUrl } } = useRuntimeConfig()
 
 const isMobileMenuOpen = ref(false)
 const showLogoutConfirm = ref(false)

@@ -73,7 +73,7 @@
             v-model="form.type"
             label="Placement"
             :options="[
-              { label: 'Hero Banner', value: 'hero' },
+              { label: 'Large campaign banner', value: 'hero' },
               { label: 'Standard Banner', value: 'banner' },
               { label: 'Mega Menu Ad', value: 'megamenu_ad' }
             ]"

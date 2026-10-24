@@ -4,6 +4,11 @@ export default defineNuxtConfig({
   srcDir: 'app/',
   devtools: { enabled: true },
   modules: ['@nuxt/ui', '@pinia/nuxt'],
+  runtimeConfig: {
+    public: {
+      storefrontUrl: process.env.NUXT_PUBLIC_STOREFRONT_URL || 'http://localhost:3100'
+    }
+  },
   ui: {
     fonts: false
   },
