@@ -5,7 +5,7 @@
         <h1 class="text-2xl font-bold">Products</h1>
         <p class="text-gray-500 font-medium">Manage your store's catalog</p>
       </div>
-      <button class="whitespace-nowrap bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-5 rounded-full transition-colors" @click="isEditing = false; productToEdit = null; newProduct = emptyProduct(); isAddModalOpen = true">Add Product</button>
+      <button class="whitespace-nowrap bg-brand-700 hover:bg-brand-800 text-white font-bold py-2.5 px-5 rounded-full transition-colors" @click="isEditing = false; productToEdit = null; newProduct = emptyProduct(); isAddModalOpen = true">Add Product</button>
     </div>
 
     <!-- Table Header Info -->
@@ -36,12 +36,12 @@
             <div class="flex flex-wrap items-center gap-2 mt-2">
               <span class="font-bold text-gray-900">${{ (row.basePrice || 0).toFixed(2) }}</span>
               <span class="text-xs text-gray-500">{{ row.variants?.reduce((sum, v) => sum + (v.stockQuantity || 0), 0) || 0 }} in stock</span>
-              <span v-if="row.status === 'active' || row.isActive" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">Active</span>
+              <span v-if="row.status === 'active' || row.isActive" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-brand-100 text-brand-700">Active</span>
               <span v-else-if="row.status === 'draft'" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700">Draft</span>
               <span v-else class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-gray-100 text-gray-700 capitalize">{{ row.status || 'Unknown' }}</span>
             </div>
             <div class="flex gap-2 mt-3">
-              <button @click="openEditModal(row)" class="flex-1 inline-flex items-center justify-center gap-1.5 border border-emerald-200 bg-emerald-50 text-emerald-700 font-bold text-xs py-2 rounded-full"><Pencil class="w-3.5 h-3.5" /> Edit</button>
+              <button @click="openEditModal(row)" class="flex-1 inline-flex items-center justify-center gap-1.5 border border-brand-200 bg-brand-50 text-brand-700 font-bold text-xs py-2 rounded-full"><Pencil class="w-3.5 h-3.5" /> Edit</button>
               <button @click="handleDelete(row._id)" class="flex-1 inline-flex items-center justify-center gap-1.5 border border-red-200 bg-red-50 text-red-600 font-bold text-xs py-2 rounded-full"><Trash2 class="w-3.5 h-3.5" /> Delete</button>
             </div>
           </div>
@@ -72,7 +72,7 @@
 
           <template #loading>
             <div class="flex flex-col items-center justify-center py-12 text-gray-500">
-              <LoaderCircle class="w-8 h-8 animate-spin mb-4 text-emerald-700" />
+              <LoaderCircle class="w-8 h-8 animate-spin mb-4 text-brand-700" />
               <span class="text-sm font-medium">Loading products...</span>
             </div>
           </template>
@@ -89,7 +89,7 @@
           </template>
           
           <template #status-cell="{ row: { original: row } }">
-            <span v-if="row.status === 'active' || row.isActive" class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">Active</span>
+            <span v-if="row.status === 'active' || row.isActive" class="px-3 py-1 rounded-full text-xs font-bold bg-brand-100 text-brand-700">Active</span>
             <span v-else-if="row.status === 'draft'" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700">Draft</span>
             <span v-else class="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-700 capitalize">{{ row.status || 'Unknown' }}</span>
           </template>
@@ -100,7 +100,7 @@
           
           <template #actions-cell="{ row: { original: row } }">
             <div class="flex items-center space-x-2">
-              <button class="text-emerald-700 hover:bg-emerald-50 p-1.5 rounded-lg transition-colors" @click="openEditModal(row)" title="Edit">
+              <button class="text-brand-700 hover:bg-brand-50 p-1.5 rounded-lg transition-colors" @click="openEditModal(row)" title="Edit">
                 <Pencil class="w-4 h-4" />
               </button>
               <button class="text-red-600 hover:bg-red-50 p-1.5 rounded-lg transition-colors" @click="handleDelete(row._id)" title="Delete">
@@ -116,7 +116,7 @@
         <span class="text-sm text-gray-500 font-medium">Showing 1-{{ filteredRows.length }} of {{ filteredRows.length }} products</span>
         <div class="flex space-x-2">
           <UButton variant="outline" color="gray" size="sm" class="font-medium">Previous</UButton>
-          <UButton color="primary" class="bg-emerald-700 hover:bg-emerald-800 font-medium" size="sm">1</UButton>
+          <UButton color="primary" class="bg-brand-700 hover:bg-brand-800 font-medium" size="sm">1</UButton>
           <UButton variant="outline" color="gray" size="sm" class="font-medium">Next</UButton>
         </div>
       </div>
@@ -236,7 +236,7 @@
         <div class="border-t border-gray-200 pt-4 mt-4">
           <div class="flex justify-between items-center mb-4">
             <h3 class="text-sm font-bold text-gray-800">Product Variants</h3>
-            <button type="button" @click="addVariant" class="text-emerald-700 hover:text-emerald-800 text-xs font-bold">+ Add Variant</button>
+            <button type="button" @click="addVariant" class="text-brand-700 hover:text-brand-800 text-xs font-bold">+ Add Variant</button>
           </div>
           
           <div v-for="(variant, index) in newProduct.variants" :key="index" class="bg-gray-50 p-4 rounded-lg mb-3 border border-gray-200 relative">
@@ -265,7 +265,7 @@
           </button>
           <button 
             type="submit" 
-            class="px-5 py-2.5 text-sm font-bold text-white bg-emerald-700 hover:bg-emerald-800 rounded-full transition-colors flex items-center justify-center min-w-[120px]"
+            class="px-5 py-2.5 text-sm font-bold text-white bg-brand-700 hover:bg-brand-800 rounded-full transition-colors flex items-center justify-center min-w-[120px]"
             :disabled="isCreating"
           >
             <span v-if="!isCreating">{{ isEditing ? 'Update Product' : 'Save Product' }}</span>
@@ -284,7 +284,7 @@
         
         <div class="flex justify-end space-x-3 pt-4">
           <button type="button" @click="isAddPolicyModalOpen = false" class="px-5 py-2.5 text-sm font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors">Cancel</button>
-          <button type="submit" class="px-5 py-2.5 text-sm font-bold text-white bg-emerald-700 hover:bg-emerald-800 rounded-full transition-colors flex items-center justify-center min-w-[120px]" :disabled="isCreatingPolicy">
+          <button type="submit" class="px-5 py-2.5 text-sm font-bold text-white bg-brand-700 hover:bg-brand-800 rounded-full transition-colors flex items-center justify-center min-w-[120px]" :disabled="isCreatingPolicy">
             <span v-if="!isCreatingPolicy">Save Policy</span>
             <LoaderCircle v-else class="w-5 h-5 animate-spin" />
           </button>

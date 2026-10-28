@@ -6,7 +6,7 @@
         <p class="text-gray-500 font-medium">View and manage all customer orders.</p>
       </div>
       <div>
-        <UButton color="primary" :loading="loading" @click="fetchOrders" class="bg-emerald-700 hover:bg-emerald-800">
+        <UButton color="primary" :loading="loading" @click="fetchOrders" class="bg-brand-700 hover:bg-brand-800">
           Refresh
         </UButton>
       </div>
@@ -18,8 +18,8 @@
         Transaction Records — <span class="font-normal">{{ filteredOrders.length }} matching records</span>
       </h2>
       <div class="flex flex-col sm:flex-row gap-2 sm:gap-3">
-        <input v-model="search" type="search" placeholder="Search order, customer, email..." class="border border-gray-300 rounded-full px-4 py-2 text-sm font-medium focus:outline-none focus:border-emerald-600 w-full sm:w-64" />
-        <select v-model="statusFilter" class="border border-gray-300 rounded-full px-4 py-2 text-sm font-semibold bg-white focus:outline-none focus:border-emerald-600 w-full sm:w-auto">
+        <input v-model="search" type="search" placeholder="Search order, customer, email..." class="border border-gray-300 rounded-full px-4 py-2 text-sm font-medium focus:outline-none focus:border-brand-600 w-full sm:w-64" />
+        <select v-model="statusFilter" class="border border-gray-300 rounded-full px-4 py-2 text-sm font-semibold bg-white focus:outline-none focus:border-brand-600 w-full sm:w-auto">
           <option value="">All statuses</option>
           <option v-for="s in statuses" :key="s" :value="s">{{ s }}</option>
         </select>
@@ -32,7 +32,7 @@
         <div v-for="row in filteredOrders" :key="row._id" class="p-4">
           <div class="flex items-start justify-between gap-3">
             <div class="min-w-0">
-              <p class="font-bold text-emerald-700">{{ row.orderNumber }}</p>
+              <p class="font-bold text-brand-700">{{ row.orderNumber }}</p>
               <p class="text-xs text-gray-500 mt-0.5">{{ row.date }}</p>
             </div>
             <p class="font-bold text-gray-900 whitespace-nowrap">{{ row.total }}</p>
@@ -43,9 +43,9 @@
           </div>
           <div class="flex flex-wrap items-center gap-2 mt-2">
             <span class="px-2.5 py-1 rounded-full text-[10px] font-bold" :class="statusClass(row.status)">{{ row.status }}</span>
-            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold" :class="row.paymentStatus === 'Paid' ? 'bg-emerald-100 text-emerald-700' : row.paymentStatus === 'Refunded' ? 'bg-gray-100 text-gray-700' : 'bg-amber-100 text-amber-700'">{{ row.paymentStatus }}</span>
+            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold" :class="row.paymentStatus === 'Paid' ? 'bg-brand-100 text-brand-700' : row.paymentStatus === 'Refunded' ? 'bg-gray-100 text-gray-700' : 'bg-amber-100 text-amber-700'">{{ row.paymentStatus }}</span>
           </div>
-          <button @click="openPreviewModal(row)" class="mt-3 w-full inline-flex items-center justify-center gap-2 border border-emerald-200 bg-emerald-50 text-emerald-700 font-bold text-xs py-2.5 rounded-full">
+          <button @click="openPreviewModal(row)" class="mt-3 w-full inline-flex items-center justify-center gap-2 border border-brand-200 bg-brand-50 text-brand-700 font-bold text-xs py-2.5 rounded-full">
             <Eye class="w-4 h-4" /> View order details
           </button>
         </div>
@@ -56,7 +56,7 @@
         <UTable :columns="columns" :data="filteredOrders" :loading="loading" class="min-w-[800px]" :ui="{ th: { base: 'bg-gray-50 text-gray-500 font-bold py-4' }, td: { base: 'py-4 border-b border-gray-100 last:border-0 text-gray-700 font-medium' } }">
           
           <template #orderNumber-cell="{ row: { original: row } }">
-            <span class="text-emerald-700 font-bold">{{ row.orderNumber }}</span>
+            <span class="text-brand-700 font-bold">{{ row.orderNumber }}</span>
           </template>
 
           <template #status-cell="{ row: { original: row } }">
@@ -64,20 +64,20 @@
           </template>
 
           <template #payment-cell="{ row: { original: row } }">
-            <span class="px-3 py-1 rounded-full text-xs font-bold" :class="row.paymentStatus === 'Paid' ? 'bg-emerald-100 text-emerald-700' : row.paymentStatus === 'Refunded' ? 'bg-gray-100 text-gray-700' : 'bg-amber-100 text-amber-700'">
+            <span class="px-3 py-1 rounded-full text-xs font-bold" :class="row.paymentStatus === 'Paid' ? 'bg-brand-100 text-brand-700' : row.paymentStatus === 'Refunded' ? 'bg-gray-100 text-gray-700' : 'bg-amber-100 text-amber-700'">
               {{ row.paymentStatus }}
             </span>
           </template>
 
           <template #actions-cell="{ row: { original: row } }">
-            <button @click="openPreviewModal(row)" class="text-emerald-700 hover:bg-emerald-50 p-1.5 rounded-lg transition-colors" title="View">
+            <button @click="openPreviewModal(row)" class="text-brand-700 hover:bg-brand-50 p-1.5 rounded-lg transition-colors" title="View">
               <Eye class="w-4 h-4" />
             </button>
           </template>
 
           <template #loading>
             <div class="flex flex-col items-center justify-center py-12 text-gray-500">
-              <LoaderCircle class="w-8 h-8 animate-spin mb-4 text-emerald-700" />
+              <LoaderCircle class="w-8 h-8 animate-spin mb-4 text-brand-700" />
               <span class="text-sm font-medium">Loading orders...</span>
             </div>
           </template>
@@ -102,7 +102,7 @@
             </div>
             <div class="text-right">
               <p class="text-sm text-gray-500 font-medium">Current Status</p>
-              <span class="px-3 py-1 mt-1 inline-block rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">{{ selectedOrder.status }}</span>
+              <span class="px-3 py-1 mt-1 inline-block rounded-full text-xs font-bold bg-brand-100 text-brand-700">{{ selectedOrder.status }}</span>
             </div>
           </div>
           
@@ -160,7 +160,7 @@
               </div>
               <div v-if="selectedOrder.discountAmount > 0" class="flex justify-between text-gray-500">
                 <span>Discount {{ selectedOrder.couponCode ? `(${selectedOrder.couponCode})` : '' }}</span>
-                <span class="font-medium text-emerald-600">-${{ (selectedOrder.discountAmount || 0).toFixed(2) }}</span>
+                <span class="font-medium text-brand-600">-${{ (selectedOrder.discountAmount || 0).toFixed(2) }}</span>
               </div>
               <div class="flex justify-between text-gray-500">
                 <span>Tax</span>
@@ -173,8 +173,8 @@
             </div>
           </div>
           
-          <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100 mt-6">
-            <h3 class="font-bold text-emerald-800 mb-3">Update Order Status</h3>
+          <div class="bg-brand-50 p-4 rounded-xl border border-brand-100 mt-6">
+            <h3 class="font-bold text-brand-800 mb-3">Update Order Status</h3>
             <div class="flex items-end gap-3">
               <div class="flex-1">
                 <CustomSelect 
@@ -189,7 +189,7 @@
                   ]" 
                 />
               </div>
-              <UButton @click="handleUpdateStatus" :loading="updatingStatus" color="primary" class="bg-emerald-700 hover:bg-emerald-800 h-[42px] px-6">
+              <UButton @click="handleUpdateStatus" :loading="updatingStatus" color="primary" class="bg-brand-700 hover:bg-brand-800 h-[42px] px-6">
                 Update Status
               </UButton>
             </div>
@@ -205,7 +205,7 @@
                   ]"
                 />
               </div>
-              <UButton @click="handleUpdatePayment" :loading="updatingPayment" color="primary" class="bg-emerald-700 hover:bg-emerald-800 h-[42px] px-6">
+              <UButton @click="handleUpdatePayment" :loading="updatingPayment" color="primary" class="bg-brand-700 hover:bg-brand-800 h-[42px] px-6">
                 Update Payment
               </UButton>
             </div>
@@ -218,7 +218,7 @@
         <span class="text-sm text-gray-500 font-medium">Showing 1-{{ filteredOrders.length }} of {{ filteredOrders.length }} transactions</span>
         <div class="flex space-x-2">
           <UButton variant="outline" color="gray" size="sm" class="font-medium">Previous</UButton>
-          <UButton color="primary" class="bg-emerald-700 hover:bg-emerald-800 font-medium" size="sm">1</UButton>
+          <UButton color="primary" class="bg-brand-700 hover:bg-brand-800 font-medium" size="sm">1</UButton>
           <UButton variant="outline" color="gray" size="sm" class="font-medium">Next</UButton>
         </div>
       </div>
@@ -283,7 +283,7 @@ const handleUpdatePayment = async () => {
 
 const statusClass = (status: string) => {
   switch (status) {
-    case 'Delivered': return 'bg-emerald-100 text-emerald-700'
+    case 'Delivered': return 'bg-brand-100 text-brand-700'
     case 'Shipped': return 'bg-blue-100 text-blue-700'
     case 'Processing': return 'bg-indigo-100 text-indigo-700'
     case 'Cancelled': return 'bg-red-100 text-red-700'

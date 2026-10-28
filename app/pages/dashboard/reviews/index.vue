@@ -5,13 +5,13 @@
         <h1 class="text-2xl font-bold">Product Reviews</h1>
         <p class="text-gray-500 font-medium">Moderate customer feedback shown on the storefront.</p>
       </div>
-      <button @click="loadReviews" :disabled="loading" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-5 rounded-full text-sm disabled:opacity-50">
+      <button @click="loadReviews" :disabled="loading" class="bg-brand-700 hover:bg-brand-800 text-white font-bold py-2.5 px-5 rounded-full text-sm disabled:opacity-50">
         {{ loading ? 'Refreshing…' : 'Refresh' }}
       </button>
     </div>
 
     <div v-if="loading" class="flex justify-center p-12">
-      <LoaderCircle class="w-8 h-8 animate-spin text-emerald-700" />
+      <LoaderCircle class="w-8 h-8 animate-spin text-brand-700" />
     </div>
 
     <div v-else-if="reviews.length === 0" class="bg-white border border-dashed border-gray-300 rounded-xl p-12 text-center text-gray-500 font-medium">

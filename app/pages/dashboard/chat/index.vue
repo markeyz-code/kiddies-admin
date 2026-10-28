@@ -28,7 +28,7 @@
 
       <!-- Chat List -->
       <div class="flex-1 overflow-y-auto bg-white">
-        <div v-if="loading" class="flex justify-center p-8 text-emerald-500">
+        <div v-if="loading" class="flex justify-center p-8 text-brand-500">
           <LoaderCircle class="w-6 h-6 animate-spin" />
         </div>
         <div v-else-if="filteredSessions.length === 0" class="p-8 text-center text-gray-400 text-sm">
@@ -41,7 +41,7 @@
           @click="selectSession(session._id)"
           :class="['flex items-center px-3 py-3 cursor-pointer hover:bg-[#f5f6f6]', selectedSession === session._id ? 'bg-[#f0f2f5]' : '']"
         >
-          <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold mr-3 shrink-0">
+          <div class="w-12 h-12 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center font-bold mr-3 shrink-0">
             {{ (session.customerName || 'A')[0].toUpperCase() }}
           </div>
           <div class="flex-1 min-w-0 border-b border-gray-100 pb-3 -mb-3 pt-1">
@@ -66,7 +66,7 @@
           <button @click="selectedSession = null" aria-label="Back to conversations" class="md:hidden text-gray-500 hover:text-gray-700 mr-2 p-1">
             <ArrowLeft class="w-5 h-5" />
           </button>
-          <div class="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold mr-3">
+          <div class="w-10 h-10 bg-brand-100 text-brand-700 rounded-full flex items-center justify-center font-bold mr-3">
             {{ (activeSessionDetails?.customerName || 'C')[0].toUpperCase() }}
           </div>
           <div class="flex-1 min-w-0">

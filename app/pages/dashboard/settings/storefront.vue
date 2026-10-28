@@ -6,7 +6,7 @@
     </div>
 
     <div v-if="loading" class="flex justify-center p-12">
-      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-700"></div>
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-700"></div>
     </div>
 
     <div v-else class="grid gap-8">
@@ -35,7 +35,7 @@
                   <UploadCloud v-if="!uploading" class="w-6 h-6 text-gray-400 mb-2" />
                   <span v-if="!uploading" class="text-sm text-gray-500 font-medium">Click to upload image</span>
                   <div v-else class="flex items-center space-x-2">
-                    <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-emerald-600"></div>
+                    <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-brand-600"></div>
                     <span class="text-sm text-gray-500 font-medium">Uploading...</span>
                   </div>
                 </div>
@@ -79,7 +79,7 @@
                     <UploadCloud v-if="!uploading" class="w-6 h-6 text-gray-400 mb-2" />
                     <span v-if="!uploading" class="text-sm text-gray-500 font-medium">Click to upload</span>
                     <div v-else class="flex items-center space-x-2">
-                      <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-emerald-600"></div>
+                      <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-brand-600"></div>
                       <span class="text-sm text-gray-500 font-medium">Uploading...</span>
                     </div>
                   </div>
@@ -102,17 +102,17 @@
             <div class="space-y-4">
               <CustomInput v-model="settings.brandStory.section1Title" label="Section 1 Title" />
               <label class="block text-sm font-bold text-gray-700 mb-1">Section 1 Text</label>
-              <textarea v-model="settings.brandStory.section1Text" rows="4" class="w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm"></textarea>
+              <textarea v-model="settings.brandStory.section1Text" rows="4" class="w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 text-sm"></textarea>
             </div>
             <div class="space-y-4">
               <CustomInput v-model="settings.brandStory.section2Title" label="Section 2 Title" />
               <label class="block text-sm font-bold text-gray-700 mb-1">Section 2 Text</label>
-              <textarea v-model="settings.brandStory.section2Text" rows="4" class="w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm"></textarea>
+              <textarea v-model="settings.brandStory.section2Text" rows="4" class="w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 text-sm"></textarea>
             </div>
             <div class="space-y-4">
               <CustomInput v-model="settings.brandStory.section3Title" label="Section 3 Title" />
               <label class="block text-sm font-bold text-gray-700 mb-1">Section 3 Text</label>
-              <textarea v-model="settings.brandStory.section3Text" rows="4" class="w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm"></textarea>
+              <textarea v-model="settings.brandStory.section3Text" rows="4" class="w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 text-sm"></textarea>
             </div>
           </div>
         </div>
@@ -120,7 +120,7 @@
 
       <!-- Save Button -->
       <div class="flex justify-end pt-4 pb-12">
-        <button @click="saveSettings" :disabled="saving" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3 px-8 rounded-full transition-colors flex items-center shadow-md disabled:opacity-50">
+        <button @click="saveSettings" :disabled="saving" class="bg-brand-700 hover:bg-brand-800 text-white font-bold py-3 px-8 rounded-full transition-colors flex items-center shadow-md disabled:opacity-50">
           <Save class="w-5 h-5 mr-2" /> {{ saving ? 'Saving...' : 'Save Storefront Settings' }}
         </button>
       </div>

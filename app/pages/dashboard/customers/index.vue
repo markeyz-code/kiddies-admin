@@ -6,7 +6,7 @@
         <p class="text-gray-500 font-medium">View and manage all registered customers.</p>
       </div>
       <div>
-        <UButton color="primary" :loading="loading" @click="fetchCustomers" class="bg-emerald-700 hover:bg-emerald-800">
+        <UButton color="primary" :loading="loading" @click="fetchCustomers" class="bg-brand-700 hover:bg-brand-800">
           Refresh
         </UButton>
       </div>
@@ -17,7 +17,7 @@
       <h2 class="text-lg font-bold text-gray-800">
         Customer Records — <span class="font-normal">{{ filteredCustomers.length }} matching records</span>
       </h2>
-      <input v-model="search" type="search" placeholder="Search customers..." class="border border-gray-300 rounded-full px-4 py-2 text-sm font-medium focus:outline-none focus:border-emerald-600 w-full sm:w-64" />
+      <input v-model="search" type="search" placeholder="Search customers..." class="border border-gray-300 rounded-full px-4 py-2 text-sm font-medium focus:outline-none focus:border-brand-600 w-full sm:w-64" />
     </div>
 
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -25,7 +25,7 @@
       <div class="md:hidden divide-y divide-gray-100">
         <div v-for="row in filteredCustomers" :key="row.id" class="p-4">
           <div class="flex items-center gap-3">
-            <div class="h-11 w-11 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">{{ (row.name || '?').charAt(0).toUpperCase() }}</div>
+            <div class="h-11 w-11 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center font-bold">{{ (row.name || '?').charAt(0).toUpperCase() }}</div>
             <div class="min-w-0 flex-1">
               <p class="font-bold text-gray-900 truncate">{{ row.name }}</p>
               <p class="text-xs text-gray-500 truncate">{{ row.email }}</p>
@@ -36,7 +36,7 @@
             <span>Joined {{ row.joined }}</span>
             <span>{{ row.verified ? 'Verified' : 'Unverified' }}</span>
           </div>
-          <button @click="openPreviewModal(row)" class="mt-3 w-full inline-flex items-center justify-center gap-2 border border-emerald-200 bg-emerald-50 text-emerald-700 font-bold text-xs py-2.5 rounded-full">
+          <button @click="openPreviewModal(row)" class="mt-3 w-full inline-flex items-center justify-center gap-2 border border-brand-200 bg-brand-50 text-brand-700 font-bold text-xs py-2.5 rounded-full">
             <Eye class="w-4 h-4" /> View customer & orders
           </button>
         </div>
@@ -47,18 +47,18 @@
         <UTable :columns="columns" :data="filteredCustomers" :loading="loading" class="min-w-[800px]" :ui="{ th: { base: 'bg-gray-50 text-gray-500 font-bold py-4' }, td: { base: 'py-4 border-b border-gray-100 last:border-0 text-gray-700 font-medium' } }">
           
           <template #id-cell="{ row: { original: row } }">
-            <span class="text-emerald-700 font-bold">{{ row.id.slice(0, 8).toUpperCase() }}</span>
+            <span class="text-brand-700 font-bold">{{ row.id.slice(0, 8).toUpperCase() }}</span>
           </template>
 
           <template #actions-cell="{ row: { original: row } }">
-            <button @click="openPreviewModal(row)" class="text-emerald-700 hover:bg-emerald-50 p-1.5 rounded-lg transition-colors" title="View">
+            <button @click="openPreviewModal(row)" class="text-brand-700 hover:bg-brand-50 p-1.5 rounded-lg transition-colors" title="View">
               <Eye class="w-4 h-4" />
             </button>
           </template>
 
           <template #loading>
             <div class="flex flex-col items-center justify-center py-12 text-gray-500">
-              <LoaderCircle class="w-8 h-8 animate-spin mb-4 text-emerald-700" />
+              <LoaderCircle class="w-8 h-8 animate-spin mb-4 text-brand-700" />
               <span class="text-sm font-medium">Loading customers...</span>
             </div>
           </template>
@@ -77,7 +77,7 @@
         <div v-if="selectedCustomer" class="space-y-6">
           
           <div class="flex items-center space-x-4 border-b border-gray-100 pb-4">
-            <div class="h-16 w-16 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-700 font-bold text-2xl">
+            <div class="h-16 w-16 bg-brand-100 rounded-full flex items-center justify-center text-brand-700 font-bold text-2xl">
               {{ selectedCustomer.name.charAt(0).toUpperCase() }}
             </div>
             <div>
@@ -134,7 +134,7 @@
         <span class="text-sm text-gray-500 font-medium">Showing 1-{{ filteredCustomers.length }} of {{ filteredCustomers.length }} customers</span>
         <div class="flex space-x-2">
           <UButton variant="outline" color="gray" size="sm" class="font-medium">Previous</UButton>
-          <UButton color="primary" class="bg-emerald-700 hover:bg-emerald-800 font-medium" size="sm">1</UButton>
+          <UButton color="primary" class="bg-brand-700 hover:bg-brand-800 font-medium" size="sm">1</UButton>
           <UButton variant="outline" color="gray" size="sm" class="font-medium">Next</UButton>
         </div>
       </div>

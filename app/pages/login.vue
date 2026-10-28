@@ -54,7 +54,7 @@
               </template>
             </CustomInput>
             <div class="flex justify-end pt-1">
-              <NuxtLink to="/forgot-password" class="text-xs font-semibold text-emerald-700 hover:text-emerald-600 transition-colors">
+              <NuxtLink to="/forgot-password" class="text-xs font-semibold text-brand-700 hover:text-brand-600 transition-colors">
                 Forgot Password?
               </NuxtLink>
             </div>
@@ -63,7 +63,7 @@
           <div class="pt-2">
             <button 
               type="submit" 
-              class="w-full flex items-center justify-center py-3.5 px-4 rounded-full font-bold text-[15px] bg-emerald-700 hover:bg-emerald-800 text-white transition-colors disabled:opacity-70 disabled:cursor-not-allowed" 
+              class="w-full flex items-center justify-center py-3.5 px-4 rounded-full font-bold text-[15px] bg-brand-700 hover:bg-brand-800 text-white transition-colors disabled:opacity-70 disabled:cursor-not-allowed" 
               :disabled="loading"
             >
               <span v-if="!loading">Sign In</span>

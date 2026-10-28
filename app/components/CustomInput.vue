@@ -14,7 +14,7 @@
         :placeholder="placeholder"
         :required="required"
         :step="step"
-        class="block w-full rounded-full border border-gray-300 bg-white text-gray-900 focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 sm:text-base transition-colors py-3.5 placeholder-gray-400"
+        class="block w-full rounded-full border border-gray-300 bg-white text-gray-900 focus:ring-2 focus:ring-brand-600 focus:border-brand-600 sm:text-base transition-colors py-3.5 placeholder-gray-400"
         :class="[$slots.leading ? 'pl-11' : 'pl-5', $slots.trailing ? 'pr-11' : 'pr-5']"
       />
       <div v-if="$slots.trailing" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500">

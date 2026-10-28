@@ -5,7 +5,7 @@
         <h1 class="text-2xl font-bold">Promotions & Banners</h1>
         <p class="text-gray-500 font-medium">Manage hero banners, category promos and mega-menu ads.</p>
       </div>
-      <button @click="openCreate" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-5 rounded-full transition-colors text-sm">
+      <button @click="openCreate" class="bg-brand-700 hover:bg-brand-800 text-white font-bold py-2.5 px-5 rounded-full transition-colors text-sm">
         + New Promotion
       </button>
     </div>
@@ -15,8 +15,8 @@
         Promotions — <span class="font-normal">{{ filteredPromotions.length }} records</span>
       </h2>
       <div class="flex gap-3">
-        <input v-model="search" type="search" placeholder="Search promotions..." class="border border-gray-300 rounded-full px-4 py-2 text-sm font-medium focus:outline-none focus:border-emerald-600 w-64" />
-        <select v-model="typeFilter" class="border border-gray-300 rounded-full px-4 py-2 text-sm font-semibold bg-white focus:outline-none focus:border-emerald-600">
+        <input v-model="search" type="search" placeholder="Search promotions..." class="border border-gray-300 rounded-full px-4 py-2 text-sm font-medium focus:outline-none focus:border-brand-600 w-64" />
+        <select v-model="typeFilter" class="border border-gray-300 rounded-full px-4 py-2 text-sm font-semibold bg-white focus:outline-none focus:border-brand-600">
           <option value="">All types</option>
           <option value="hero">Hero</option>
           <option value="banner">Banner</option>
@@ -26,7 +26,7 @@
     </div>
 
     <div v-if="loading" class="flex justify-center p-12">
-      <LoaderCircle class="w-8 h-8 animate-spin text-emerald-700" />
+      <LoaderCircle class="w-8 h-8 animate-spin text-brand-700" />
     </div>
 
     <div v-else-if="filteredPromotions.length === 0" class="bg-white border border-dashed border-gray-300 rounded-xl p-12 text-center">
@@ -45,7 +45,7 @@
         <div class="p-4 flex-1 flex flex-col">
           <div class="flex items-center gap-2 mb-2">
             <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-100 text-blue-700">{{ promo.type }}</span>
-            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded" :class="promo.isActive ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-600'">
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded" :class="promo.isActive ? 'bg-brand-100 text-brand-700' : 'bg-gray-100 text-gray-600'">
               {{ promo.isActive ? 'Active' : 'Inactive' }}
             </span>
           </div>
@@ -53,7 +53,7 @@
           <p class="text-sm text-gray-500 mt-1 line-clamp-2">{{ promo.subtitle || 'No subtitle' }}</p>
           <p v-if="promo.ctaText" class="text-xs text-gray-400 mt-2">CTA: {{ promo.ctaText }} → {{ promo.ctaLink || '/' }}</p>
           <div class="flex items-center gap-2 mt-4 pt-3 border-t border-gray-100">
-            <button @click="toggleActive(promo)" class="text-xs font-bold px-3 py-1.5 rounded-full" :class="promo.isActive ? 'bg-amber-50 text-amber-700' : 'bg-emerald-50 text-emerald-700'">
+            <button @click="toggleActive(promo)" class="text-xs font-bold px-3 py-1.5 rounded-full" :class="promo.isActive ? 'bg-amber-50 text-amber-700' : 'bg-brand-50 text-brand-700'">
               {{ promo.isActive ? 'Deactivate' : 'Activate' }}
             </button>
             <button @click="openEdit(promo)" class="text-xs font-bold px-3 py-1.5 rounded-full bg-gray-100 text-gray-700">Edit</button>
@@ -105,7 +105,7 @@
           <div v-if="form.imageUrl" class="mt-3 h-32 rounded-lg overflow-hidden border border-gray-200">
             <img :src="form.imageUrl" class="w-full h-full object-cover" />
           </div>
-          <p v-if="uploading" class="text-xs text-emerald-700 font-bold mt-2">Uploading image…</p>
+          <p v-if="uploading" class="text-xs text-brand-700 font-bold mt-2">Uploading image…</p>
         </div>
 
         <div class="grid grid-cols-2 gap-5">
@@ -114,13 +114,13 @@
         </div>
 
         <label class="flex items-center gap-2 text-sm font-bold text-gray-700">
-          <input type="checkbox" v-model="form.isActive" class="w-4 h-4 rounded text-emerald-600" />
+          <input type="checkbox" v-model="form.isActive" class="w-4 h-4 rounded text-brand-600" />
           Active (visible on storefront)
         </label>
 
         <div class="flex justify-end gap-3 pt-4">
           <button type="button" @click="isModalOpen = false" class="px-5 py-2.5 text-sm font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-full">Cancel</button>
-          <button type="submit" :disabled="saving" class="px-5 py-2.5 text-sm font-bold text-white bg-emerald-700 hover:bg-emerald-800 rounded-full disabled:opacity-50">
+          <button type="submit" :disabled="saving" class="px-5 py-2.5 text-sm font-bold text-white bg-brand-700 hover:bg-brand-800 rounded-full disabled:opacity-50">
             {{ saving ? 'Saving…' : editingId ? 'Update Promotion' : 'Create Promotion' }}
           </button>
         </div>

@@ -5,6 +5,18 @@
   --font-sans: 'Satoshi', sans-serif;
   --font-serif: 'Clash Display', sans-serif;
 
+  --color-brand-50: #EFF5FF;
+  --color-brand-100: #DBE8FF;
+  --color-brand-200: #BCD4FF;
+  --color-brand-300: #8FB5FF;
+  --color-brand-400: #5D8FF5;
+  --color-brand-500: #3B74E8;
+  --color-brand-600: #2A5CCB;
+  --color-brand-700: #224AA8;
+  --color-brand-800: #1E3F8C;
+  --color-brand-900: #1A3578;
+  --color-brand-950: #101F4A;
+
   --color-green-50: #EFFDF5;
   --color-green-100: #D9FBE8;
   --color-green-200: #B3F5D1;

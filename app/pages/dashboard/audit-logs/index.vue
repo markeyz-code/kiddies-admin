@@ -132,7 +132,7 @@ const filteredRows = computed(() => {
 const getActionClass = (action) => {
   if (!action) return 'bg-gray-100 text-gray-700'
   const normalized = String(action).toLowerCase()
-  if (normalized.includes('created')) return 'bg-emerald-100 text-emerald-700'
+  if (normalized.includes('created')) return 'bg-brand-100 text-brand-700'
   if (normalized.includes('updated')) return 'bg-blue-100 text-blue-700'
   if (normalized.includes('deleted') || normalized.includes('cancelled')) return 'bg-red-100 text-red-700'
   return 'bg-amber-100 text-amber-700'

@@ -6,13 +6,13 @@
       <div>
         <h1 class="text-xl sm:text-3xl font-bold text-gray-900 mb-1">Enterprise Dashboard</h1>
         <p class="text-gray-500 font-medium flex items-center text-sm">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2"></span>
+          <span class="w-2 h-2 rounded-full bg-brand-500 mr-2"></span>
           Core Status: Connected
         </p>
       </div>
       <div class="flex items-center space-x-2 sm:space-x-3 w-full sm:w-auto">
-        <p class="text-gray-900 font-medium mr-2 sm:mr-4 text-sm hidden sm:block">Welcome back, <span class="text-emerald-700 font-bold">Admin</span></p>
-        <button @click="generateReport" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2 px-4 sm:py-2.5 sm:px-5 rounded-full transition-colors text-xs sm:text-sm shadow-sm flex items-center flex-shrink-0">
+        <p class="text-gray-900 font-medium mr-2 sm:mr-4 text-sm hidden sm:block">Welcome back, <span class="text-brand-700 font-bold">Admin</span></p>
+        <button @click="generateReport" class="bg-brand-700 hover:bg-brand-800 text-white font-bold py-2 px-4 sm:py-2.5 sm:px-5 rounded-full transition-colors text-xs sm:text-sm shadow-sm flex items-center flex-shrink-0">
           Generate Report
         </button>
       </div>
@@ -32,22 +32,22 @@
             <div v-else class="h-9 w-32 bg-gray-100 rounded animate-pulse mb-2"></div>
           </div>
           <div class="flex items-center text-xs font-bold mt-2">
-            <span class="text-emerald-600 flex items-center bg-emerald-50 px-2 py-0.5 rounded mr-2">Paid</span>
+            <span class="text-brand-600 flex items-center bg-brand-50 px-2 py-0.5 rounded mr-2">Paid</span>
             <span class="text-gray-400">${{ (analytics?.paidRevenue || 0).toLocaleString(undefined, { maximumFractionDigits: 0 }) }}</span>
           </div>
         </div>
 
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 flex flex-col justify-between border-l-4 border-l-emerald-500">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 flex flex-col justify-between border-l-4 border-l-brand-500">
           <div>
             <div class="flex justify-between items-center mb-2">
               <h3 class="font-bold text-gray-500 text-sm">Estimated Profit</h3>
               <TrendingUp class="w-5 h-5 text-gray-400" />
             </div>
-            <div class="text-xl sm:text-3xl font-bold text-emerald-700 mb-2" v-if="!loading">${{ (analytics?.totalProfit || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</div>
+            <div class="text-xl sm:text-3xl font-bold text-brand-700 mb-2" v-if="!loading">${{ (analytics?.totalProfit || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</div>
             <div v-else class="h-9 w-32 bg-gray-100 rounded animate-pulse mb-2"></div>
           </div>
           <div class="flex items-center text-xs font-bold mt-2">
-            <span class="text-emerald-600 flex items-center bg-emerald-50 px-2 py-0.5 rounded mr-2">Margin</span>
+            <span class="text-brand-600 flex items-center bg-brand-50 px-2 py-0.5 rounded mr-2">Margin</span>
             <span class="text-gray-400">estimated at 35%</span>
           </div>
         </div>
@@ -77,7 +77,7 @@
             <div v-else class="h-9 w-32 bg-gray-100 rounded animate-pulse mb-2"></div>
           </div>
           <div class="flex items-center text-xs font-bold mt-2">
-            <span class="text-emerald-600 flex items-center bg-emerald-50 px-2 py-0.5 rounded mr-2">Delivered</span>
+            <span class="text-brand-600 flex items-center bg-brand-50 px-2 py-0.5 rounded mr-2">Delivered</span>
             <span class="text-gray-400">{{ (analytics?.statusBreakdown?.Delivered || 0) + (analytics?.statusBreakdown?.Shipped || 0) }} fulfilled</span>
           </div>
         </div>
@@ -95,7 +95,7 @@
           <ul class="divide-y divide-gray-200">
             <li v-for="(product, idx) in topProducts" :key="idx" class="p-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
               <div class="flex items-center space-x-4">
-                <div class="w-8 h-8 rounded bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-sm">
+                <div class="w-8 h-8 rounded bg-brand-100 text-brand-800 flex items-center justify-center font-bold text-sm">
                   #{{ idx + 1 }}
                 </div>
                 <div>
@@ -105,7 +105,7 @@
               </div>
               <div class="text-right">
                 <p class="font-bold text-gray-900 text-sm">{{ product.quantity }} sold</p>
-                <p class="text-xs text-emerald-600 font-medium">${{ product.revenue.toLocaleString() }}</p>
+                <p class="text-xs text-brand-600 font-medium">${{ product.revenue.toLocaleString() }}</p>
               </div>
             </li>
             <li v-if="topProducts.length === 0" class="p-8 text-center text-gray-500 font-medium text-sm">
@@ -158,7 +158,7 @@
         <h2 class="text-lg font-bold text-gray-800">
           Recent Transactions
         </h2>
-        <NuxtLink to="/dashboard/orders" class="text-sm font-bold text-emerald-700 hover:text-emerald-800 flex items-center">
+        <NuxtLink to="/dashboard/orders" class="text-sm font-bold text-brand-700 hover:text-brand-800 flex items-center">
           View All Orders <ArrowRight class="w-4 h-4 ml-1" />
         </NuxtLink>
       </div>
@@ -168,7 +168,7 @@
           <NuxtLink v-for="row in recentTransactions" :key="row._id" to="/dashboard/orders" class="block p-4 hover:bg-gray-50">
             <div class="flex justify-between items-start gap-3">
               <div>
-                <p class="font-bold text-emerald-700">{{ row.orderNumber }}</p>
+                <p class="font-bold text-brand-700">{{ row.orderNumber }}</p>
                 <p class="text-xs text-gray-500">{{ new Date(row.createdAt).toLocaleDateString() }}</p>
               </div>
               <p class="font-bold text-gray-900">${{ (row.totalAmount || 0).toFixed(2) }}</p>
@@ -182,7 +182,7 @@
         <div class="hidden md:block overflow-x-auto">
           <UTable :columns="transactionColumns" :data="recentTransactions" :loading="loading" class="min-w-[800px]" :ui="{ th: { base: 'bg-gray-50 text-gray-500 font-bold py-4 border-b border-gray-200' }, td: { base: 'py-4 border-b border-gray-100 last:border-0 text-gray-700 font-medium' } }">
             <template #order-cell="{ row: { original: row } }">
-              <span class="font-bold text-emerald-700">{{ row.orderNumber }}</span>
+              <span class="font-bold text-brand-700">{{ row.orderNumber }}</span>
             </template>
             <template #customer-cell="{ row: { original: row } }">
               <div>
@@ -218,7 +218,7 @@
         <h2 class="text-lg font-bold text-gray-800">
           System Activity Log <span class="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full ml-2">Live</span>
         </h2>
-        <NuxtLink to="/dashboard/audit-logs" class="text-sm font-bold text-emerald-700 hover:text-emerald-800 flex items-center">
+        <NuxtLink to="/dashboard/audit-logs" class="text-sm font-bold text-brand-700 hover:text-brand-800 flex items-center">
           View Audit Trail <ArrowRight class="w-4 h-4 ml-1" />
         </NuxtLink>
       </div>
@@ -260,7 +260,7 @@
 
             <template #loading>
               <div class="flex flex-col items-center justify-center py-12 text-gray-500">
-                <LoaderCircle class="w-8 h-8 animate-spin mb-4 text-emerald-700" />
+                <LoaderCircle class="w-8 h-8 animate-spin mb-4 text-brand-700" />
                 <span class="text-sm font-medium">Loading activity...</span>
               </div>
             </template>
@@ -334,7 +334,7 @@ const recentTransactions = computed(() => {
 
 const getStatusClass = (status) => {
   switch (status?.toLowerCase()) {
-    case 'delivered': return 'bg-emerald-100 text-emerald-800'
+    case 'delivered': return 'bg-brand-100 text-brand-800'
     case 'shipped': return 'bg-blue-100 text-blue-800'
     case 'processing': return 'bg-orange-100 text-orange-800'
     case 'cancelled': return 'bg-red-100 text-red-800'
@@ -345,7 +345,7 @@ const getStatusClass = (status) => {
 const getActionClass = (action) => {
   if (!action) return 'bg-gray-100 text-gray-700'
   const normalized = action.toLowerCase()
-  if (normalized.includes('created')) return 'bg-emerald-100 text-emerald-700'
+  if (normalized.includes('created')) return 'bg-brand-100 text-brand-700'
   if (normalized.includes('updated')) return 'bg-blue-100 text-blue-700'
   if (normalized.includes('deleted') || normalized.includes('cancelled')) return 'bg-red-100 text-red-700'
   return 'bg-gray-100 text-gray-700'

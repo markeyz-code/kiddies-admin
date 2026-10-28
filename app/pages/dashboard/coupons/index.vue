@@ -7,7 +7,7 @@
       </div>
       <button 
         @click="openCreate"
-        class="whitespace-nowrap bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-5 rounded-full transition-colors text-sm shadow-sm flex items-center justify-center"
+        class="whitespace-nowrap bg-brand-700 hover:bg-brand-800 text-white font-bold py-2.5 px-5 rounded-full transition-colors text-sm shadow-sm flex items-center justify-center"
       >
         Add Coupon
       </button>
@@ -37,14 +37,14 @@
               <p class="font-black tracking-wider text-gray-900">{{ row.code }}</p>
               <p class="text-xs text-gray-500 mt-0.5">{{ row.description || 'Store coupon' }}</p>
             </div>
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold" :class="row.isActive ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-600'">{{ row.isActive ? 'Active' : 'Inactive' }}</span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold" :class="row.isActive ? 'bg-brand-100 text-brand-700' : 'bg-gray-100 text-gray-600'">{{ row.isActive ? 'Active' : 'Inactive' }}</span>
           </div>
           <p class="mt-2 text-sm font-bold text-gray-800">
             <span v-if="row.discountType === 'percentage'">{{ row.discountValue }}% off</span>
             <span v-else>${{ row.discountValue?.toFixed(2) || '0.00' }} off</span>
           </p>
           <div class="flex gap-2 mt-3">
-            <button @click="openEdit(row)" class="flex-1 inline-flex items-center justify-center gap-1.5 border border-emerald-200 bg-emerald-50 text-emerald-700 font-bold text-xs py-2 rounded-full"><Pencil class="w-3.5 h-3.5" /> Edit</button>
+            <button @click="openEdit(row)" class="flex-1 inline-flex items-center justify-center gap-1.5 border border-brand-200 bg-brand-50 text-brand-700 font-bold text-xs py-2 rounded-full"><Pencil class="w-3.5 h-3.5" /> Edit</button>
             <button @click="handleDelete(row._id)" class="flex-1 inline-flex items-center justify-center gap-1.5 border border-red-200 bg-red-50 text-red-600 font-bold text-xs py-2 rounded-full"><Trash2 class="w-3.5 h-3.5" /> Delete</button>
           </div>
         </div>
@@ -70,7 +70,7 @@
 
           <template #loading>
             <div class="flex flex-col items-center justify-center py-12 text-gray-500">
-              <LoaderCircle class="w-8 h-8 animate-spin mb-4 text-emerald-700" />
+              <LoaderCircle class="w-8 h-8 animate-spin mb-4 text-brand-700" />
               <span class="text-sm font-medium">Loading coupons...</span>
             </div>
           </template>
@@ -83,13 +83,13 @@
           </template>
           
           <template #status-cell="{ row: { original: row } }">
-            <span v-if="row.isActive" class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">Active</span>
+            <span v-if="row.isActive" class="px-3 py-1 rounded-full text-xs font-bold bg-brand-100 text-brand-700">Active</span>
             <span v-else class="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-700">Inactive</span>
           </template>
           
           <template #actions-cell="{ row: { original: row } }">
             <div class="flex items-center space-x-2">
-              <button class="text-emerald-700 hover:bg-emerald-50 p-1.5 rounded-lg transition-colors" @click="openEdit(row)" title="Edit">
+              <button class="text-brand-700 hover:bg-brand-50 p-1.5 rounded-lg transition-colors" @click="openEdit(row)" title="Edit">
                 <Pencil class="w-4 h-4" />
               </button>
               <button class="text-red-600 hover:bg-red-50 p-1.5 rounded-lg transition-colors" @click="handleDelete(row._id)" title="Delete">
@@ -172,7 +172,7 @@
           </button>
           <button 
             type="submit" 
-            class="px-5 py-2.5 text-sm font-bold text-white bg-emerald-700 hover:bg-emerald-800 rounded-full transition-colors flex items-center justify-center min-w-[120px]"
+            class="px-5 py-2.5 text-sm font-bold text-white bg-brand-700 hover:bg-brand-800 rounded-full transition-colors flex items-center justify-center min-w-[120px]"
             :disabled="loading"
           >
             <span v-if="!loading">{{ editingId ? 'Update Coupon' : 'Save Coupon' }}</span>

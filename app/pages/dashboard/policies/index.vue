@@ -5,7 +5,7 @@
         <h1 class="text-2xl font-bold">Product Policies</h1>
         <p class="text-gray-500 font-medium">Manage product details, shipping and returns configurations</p>
       </div>
-      <UButton color="primary" class="whitespace-nowrap bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-5 rounded-full" @click="openAddModal">Add Policy</UButton>
+      <UButton color="primary" class="whitespace-nowrap bg-brand-700 hover:bg-brand-800 text-white font-bold py-2.5 px-5 rounded-full" @click="openAddModal">Add Policy</UButton>
     </div>
 
     <div class="mb-4">
@@ -28,7 +28,7 @@
           <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{ row.productDetails || 'No product details' }}</p>
           <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{ row.shippingAndReturns || 'No shipping information' }}</p>
           <div class="flex gap-2 mt-3">
-            <button @click="openEditModal(row)" class="flex-1 border border-emerald-200 bg-emerald-50 text-emerald-700 font-bold text-xs py-2 rounded-full">Edit</button>
+            <button @click="openEditModal(row)" class="flex-1 border border-brand-200 bg-brand-50 text-brand-700 font-bold text-xs py-2 rounded-full">Edit</button>
             <button @click="confirmDelete(row._id)" class="flex-1 border border-red-200 bg-red-50 text-red-600 font-bold text-xs py-2 rounded-full">Delete</button>
           </div>
         </div>
@@ -50,7 +50,7 @@
 
           <template #loading>
             <div class="flex flex-col items-center justify-center py-12 text-gray-500">
-              <LoaderCircle class="w-8 h-8 animate-spin mb-4 text-emerald-700" />
+              <LoaderCircle class="w-8 h-8 animate-spin mb-4 text-brand-700" />
               <span class="text-sm font-medium">Loading policies...</span>
             </div>
           </template>
@@ -103,7 +103,7 @@
           </button>
           <button 
             type="submit" 
-            class="px-5 py-2.5 text-sm font-bold text-white bg-emerald-700 hover:bg-emerald-800 rounded-full transition-colors flex items-center justify-center min-w-[120px]"
+            class="px-5 py-2.5 text-sm font-bold text-white bg-brand-700 hover:bg-brand-800 rounded-full transition-colors flex items-center justify-center min-w-[120px]"
             :disabled="loading"
           >
             <span v-if="!loading">{{ isEditing ? 'Update Policy' : 'Save Policy' }}</span>

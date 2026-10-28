@@ -43,7 +43,7 @@
       <!-- Resize Handle -->
       <div
         v-if="!isCollapsed"
-        class="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-emerald-400 active:bg-emerald-500 transition-colors z-10"
+        class="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-brand-400 active:bg-brand-500 transition-colors z-10"
         @mousedown="startResize"
       ></div>
     </aside>
@@ -63,7 +63,7 @@
               <component :is="item.icon" class="w-5 h-5" />
               {{ item.name }}
             </NuxtLink>
-            <a :href="storefrontUrl" target="_blank" rel="noopener" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition-colors">
+            <a :href="storefrontUrl" target="_blank" rel="noopener" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-brand-700 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/30 transition-colors">
               <Globe class="w-5 h-5" />
               View Storefront
             </a>
@@ -89,7 +89,7 @@
           <span class="text-base font-bold text-gray-900 dark:text-white md:hidden truncate">JasmarKids</span>
         </div>
         <div class="flex items-center space-x-3">
-          <a :href="storefrontUrl" target="_blank" rel="noopener" class="hidden sm:inline-flex items-center gap-2 text-xs font-bold text-emerald-700 border border-emerald-200 bg-emerald-50 px-3 py-1.5 rounded-full hover:bg-emerald-100">
+          <a :href="storefrontUrl" target="_blank" rel="noopener" class="hidden sm:inline-flex items-center gap-2 text-xs font-bold text-brand-700 border border-brand-200 bg-brand-50 px-3 py-1.5 rounded-full hover:bg-brand-100">
             <Globe class="w-3.5 h-3.5" /> View Store
           </a>
           <ClientOnly>

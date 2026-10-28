@@ -5,24 +5,24 @@
         <h1 class="text-2xl font-bold">Inbox</h1>
         <p class="text-gray-500 font-medium">Customer messages and newsletter subscribers.</p>
       </div>
-      <button @click="loadAll" :disabled="loading" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-5 rounded-full text-sm disabled:opacity-50">
+      <button @click="loadAll" :disabled="loading" class="bg-brand-700 hover:bg-brand-800 text-white font-bold py-2.5 px-5 rounded-full text-sm disabled:opacity-50">
         {{ loading ? 'Refreshing…' : 'Refresh' }}
       </button>
     </div>
 
     <div class="flex gap-2 mb-6">
-      <button @click="tab = 'messages'" class="px-5 py-2 rounded-full text-sm font-bold" :class="tab === 'messages' ? 'bg-emerald-700 text-white' : 'bg-gray-100 text-gray-700'">
+      <button @click="tab = 'messages'" class="px-5 py-2 rounded-full text-sm font-bold" :class="tab === 'messages' ? 'bg-brand-700 text-white' : 'bg-gray-100 text-gray-700'">
         Messages ({{ messages.length }})
       </button>
-      <button @click="tab = 'subscribers'" class="px-5 py-2 rounded-full text-sm font-bold" :class="tab === 'subscribers' ? 'bg-emerald-700 text-white' : 'bg-gray-100 text-gray-700'">
+      <button @click="tab = 'subscribers'" class="px-5 py-2 rounded-full text-sm font-bold" :class="tab === 'subscribers' ? 'bg-brand-700 text-white' : 'bg-gray-100 text-gray-700'">
         Subscribers ({{ subscribers.length }})
       </button>
     </div>
 
-    <input v-model="search" type="search" placeholder="Search…" class="mb-4 border border-gray-300 rounded-full px-4 py-2 text-sm font-medium focus:outline-none focus:border-emerald-600 w-72" />
+    <input v-model="search" type="search" placeholder="Search…" class="mb-4 border border-gray-300 rounded-full px-4 py-2 text-sm font-medium focus:outline-none focus:border-brand-600 w-72" />
 
     <div v-if="loading" class="flex justify-center p-12">
-      <LoaderCircle class="w-8 h-8 animate-spin text-emerald-700" />
+      <LoaderCircle class="w-8 h-8 animate-spin text-brand-700" />
     </div>
 
     <div v-else-if="tab === 'messages'" class="space-y-4">
@@ -31,12 +31,12 @@
         <div class="flex flex-wrap justify-between gap-2 mb-2">
           <div>
             <p class="font-bold text-gray-900">{{ message.firstName }} {{ message.lastName }}</p>
-            <a :href="`mailto:${message.email}`" class="text-sm text-emerald-700 font-medium">{{ message.email }}</a>
+            <a :href="`mailto:${message.email}`" class="text-sm text-brand-700 font-medium">{{ message.email }}</a>
           </div>
           <span class="text-xs text-gray-500 font-medium">{{ new Date(message.createdAt).toLocaleString() }}</span>
         </div>
         <p class="text-sm text-gray-700 whitespace-pre-line">{{ message.message }}</p>
-        <a :href="`mailto:${message.email}?subject=Re: Your JasmarKids enquiry`" class="inline-block mt-3 text-xs font-bold text-emerald-700 border border-emerald-200 bg-emerald-50 px-3 py-1.5 rounded-full">Reply by email</a>
+        <a :href="`mailto:${message.email}?subject=Re: Your JasmarKids enquiry`" class="inline-block mt-3 text-xs font-bold text-brand-700 border border-brand-200 bg-brand-50 px-3 py-1.5 rounded-full">Reply by email</a>
       </div>
     </div>
 
@@ -51,7 +51,7 @@
             <td class="px-5 py-3 font-medium text-gray-900">{{ subscriber.email }}</td>
             <td class="px-5 py-3 text-gray-500">{{ new Date(subscriber.createdAt).toLocaleDateString() }}</td>
             <td class="px-5 py-3">
-              <span class="px-2.5 py-1 rounded-full text-xs font-bold" :class="subscriber.isActive ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-600'">
+              <span class="px-2.5 py-1 rounded-full text-xs font-bold" :class="subscriber.isActive ? 'bg-brand-100 text-brand-700' : 'bg-gray-100 text-gray-600'">
                 {{ subscriber.isActive ? 'Active' : 'Unsubscribed' }}
               </span>
             </td>

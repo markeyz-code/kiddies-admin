@@ -6,7 +6,7 @@
     </div>
 
     <div v-if="loading" class="flex justify-center p-12">
-      <LoaderCircle class="w-8 h-8 animate-spin text-emerald-700" />
+      <LoaderCircle class="w-8 h-8 animate-spin text-brand-700" />
     </div>
 
     <div v-else-if="loadError" class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
@@ -44,7 +44,7 @@
           </div>
 
           <div class="flex justify-end pt-4 border-t border-gray-100">
-            <button @click="saveSettings" :disabled="saving || loading || !!loadError" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-6 rounded-full transition-colors text-sm flex items-center disabled:opacity-50">
+            <button @click="saveSettings" :disabled="saving || loading || !!loadError" class="bg-brand-700 hover:bg-brand-800 text-white font-bold py-2.5 px-6 rounded-full transition-colors text-sm flex items-center disabled:opacity-50">
               <Save class="w-4 h-4 mr-2" /> {{ saving ? 'Saving...' : 'Save Changes' }}
             </button>
           </div>
@@ -68,7 +68,7 @@
             <CustomInput v-model="settings.twitter" label="X / Twitter URL" placeholder="https://x.com/..." />
           </div>
           <div class="flex justify-end pt-4 border-t border-gray-100">
-            <button @click="saveSettings" :disabled="saving || loading || !!loadError" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-6 rounded-full transition-colors text-sm flex items-center disabled:opacity-50">
+            <button @click="saveSettings" :disabled="saving || loading || !!loadError" class="bg-brand-700 hover:bg-brand-800 text-white font-bold py-2.5 px-6 rounded-full transition-colors text-sm flex items-center disabled:opacity-50">
               <Save class="w-4 h-4 mr-2" /> {{ saving ? 'Saving...' : 'Save Changes' }}
             </button>
           </div>
@@ -95,7 +95,7 @@
             </CustomInput>
           </div>
           <div class="flex justify-end pt-4 border-t border-gray-100">
-            <button @click="saveSettings" :disabled="saving || loading || !!loadError" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-6 rounded-full transition-colors text-sm flex items-center disabled:opacity-50">
+            <button @click="saveSettings" :disabled="saving || loading || !!loadError" class="bg-brand-700 hover:bg-brand-800 text-white font-bold py-2.5 px-6 rounded-full transition-colors text-sm flex items-center disabled:opacity-50">
               <Save class="w-4 h-4 mr-2" /> {{ saving ? 'Saving...' : 'Save Changes' }}
             </button>
           </div>
@@ -117,7 +117,7 @@
           </div>
           
           <div class="flex justify-end pt-4 border-t border-gray-100">
-            <button @click="saveSettings" :disabled="saving || loading || !!loadError" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-6 rounded-full transition-colors text-sm flex items-center disabled:opacity-50">
+            <button @click="saveSettings" :disabled="saving || loading || !!loadError" class="bg-brand-700 hover:bg-brand-800 text-white font-bold py-2.5 px-6 rounded-full transition-colors text-sm flex items-center disabled:opacity-50">
               <Save class="w-4 h-4 mr-2" /> {{ saving ? 'Saving...' : 'Save Changes' }}
             </button>
           </div>

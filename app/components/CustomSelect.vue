@@ -7,7 +7,7 @@
       <button
         type="button"
         @click="isOpen = !isOpen"
-        class="block w-full rounded-full border border-gray-300 bg-white text-gray-900 focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 sm:text-base transition-colors py-3.5 pl-5 pr-11 text-left relative focus:outline-none"
+        class="block w-full rounded-full border border-gray-300 bg-white text-gray-900 focus:ring-2 focus:ring-brand-600 focus:border-brand-600 sm:text-base transition-colors py-3.5 pl-5 pr-11 text-left relative focus:outline-none"
         :class="{ 'text-gray-400': !modelValue }"
       >
         <span class="block truncate">{{ displayValue || placeholder }}</span>
@@ -32,12 +32,12 @@
             v-for="option in options"
             :key="option.value"
             @click="selectOption(option)"
-            class="relative cursor-pointer select-none py-2 pl-5 pr-9 text-gray-900 hover:bg-emerald-50 hover:text-emerald-900 transition-colors"
+            class="relative cursor-pointer select-none py-2 pl-5 pr-9 text-gray-900 hover:bg-brand-50 hover:text-brand-900 transition-colors"
           >
             <span :class="['block truncate', modelValue === option.value ? 'font-bold' : 'font-normal']">
               {{ option.label }}
             </span>
-            <span v-if="modelValue === option.value" class="absolute inset-y-0 right-0 flex items-center pr-4 text-emerald-600">
+            <span v-if="modelValue === option.value" class="absolute inset-y-0 right-0 flex items-center pr-4 text-brand-600">
               <Check class="h-5 w-5" />
             </span>
           </li>
