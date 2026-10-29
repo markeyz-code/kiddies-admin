@@ -5,17 +5,28 @@
   --font-sans: 'Satoshi', sans-serif;
   --font-serif: 'Clash Display', sans-serif;
 
-  --color-brand-50: #EFF5FF;
-  --color-brand-100: #DBE8FF;
-  --color-brand-200: #BCD4FF;
-  --color-brand-300: #8FB5FF;
-  --color-brand-400: #5D8FF5;
-  --color-brand-500: #3B74E8;
-  --color-brand-600: #2A5CCB;
-  --color-brand-700: #224AA8;
-  --color-brand-800: #1E3F8C;
-  --color-brand-900: #1A3578;
-  --color-brand-950: #101F4A;
+  --color-brand-50: #F2FBFF;
+  --color-brand-100: #E1F6FE;
+  --color-brand-200: #C4EDFC;
+  --color-brand-300: #9ADFF9;
+  --color-brand-400: #67CDF4;
+  --color-brand-500: #38B8EC;
+  --color-brand-600: #1D9ED3;
+  --color-brand-700: #157FAC;
+  --color-brand-800: #166A8C;
+  --color-brand-900: #15536B;
+  --color-brand-950: #0C3445;
+
+  --color-coral-50: #FFF5FA;
+  --color-coral-100: #FFE7F2;
+  --color-coral-200: #FFCEE5;
+  --color-coral-300: #FFA9D2;
+  --color-coral-400: #FF7DBA;
+  --color-coral-500: #F45FA8;
+  --color-coral-600: #D9458C;
+  --color-coral-700: #B33370;
+  --color-coral-800: #8C2A58;
+  --color-coral-900: #6B2342;
 
   --color-green-50: #EFFDF5;
   --color-green-100: #D9FBE8;

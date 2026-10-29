@@ -6,7 +6,10 @@
       :style="{ width: sidebarWidth + 'px', minWidth: '56px' }"
     >
       <div class="h-16 flex items-center px-4 border-b border-gray-200 dark:border-gray-800 overflow-hidden">
-        <span v-if="!isCollapsed" class="text-lg font-bold text-primary-600 dark:text-primary-400 whitespace-nowrap">JasmarKids Admin</span>
+        <span v-if="!isCollapsed" class="flex flex-col leading-none whitespace-nowrap">
+          <span class="text-lg font-bold text-coral-500">JasmarKids <span class="text-gray-900 dark:text-white">Admin</span></span>
+          <span class="mt-1 text-[8px] font-bold uppercase tracking-[0.18em] text-brand-600">by Tayisi · Kids Clothing</span>
+        </span>
         <span v-else class="text-lg font-bold text-primary-600 dark:text-primary-400">JK</span>
       </div>
 
@@ -53,7 +56,10 @@
       <template #content>
         <div class="flex flex-col h-full bg-white dark:bg-gray-900">
           <div class="h-16 flex items-center justify-between px-6 border-b border-gray-200 dark:border-gray-800">
-            <span class="text-xl font-bold text-primary-600 dark:text-primary-400">JasmarKids Admin</span>
+            <span class="flex flex-col leading-none">
+              <span class="text-xl font-bold text-coral-500">JasmarKids <span class="text-gray-900 dark:text-white">Admin</span></span>
+              <span class="mt-1 text-[8px] font-bold uppercase tracking-[0.18em] text-brand-600">by Tayisi · Kids Clothing</span>
+            </span>
             <UButton color="neutral" variant="ghost" icon="i-lucide-x" @click="isMobileMenuOpen = false">
               <X class="w-5 h-5 text-gray-500 dark:text-gray-400" />
             </UButton>
@@ -86,7 +92,7 @@
           <button class="md:hidden p-2 -ml-1 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" @click="isMobileMenuOpen = true">
             <Menu class="w-5 h-5" />
           </button>
-          <span class="text-base font-bold text-gray-900 dark:text-white md:hidden truncate">JasmarKids</span>
+          <span class="text-base font-bold text-coral-500 md:hidden truncate">JasmarKids <span class="text-gray-900 dark:text-white">Admin</span></span>
         </div>
         <div class="flex items-center space-x-3">
           <a :href="storefrontUrl" target="_blank" rel="noopener" class="hidden sm:inline-flex items-center gap-2 text-xs font-bold text-brand-700 border border-brand-200 bg-brand-50 px-3 py-1.5 rounded-full hover:bg-brand-100">

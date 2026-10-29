@@ -17,6 +17,7 @@
       <div class="w-full max-w-md">
         <div class="mb-10">
           <h2 class="text-2xl font-bold text-gray-900 mb-2">JasmarKids Admin Portal</h2>
+          <p class="mb-2 text-[10px] font-bold uppercase tracking-[0.22em] text-brand-600">by Tayisi · Kids Clothing</p>
           <p class="text-gray-500 font-medium text-sm">Sign in to your account</p>
         </div>
 
@@ -63,7 +64,7 @@
           <div class="pt-2">
             <button 
               type="submit" 
-              class="w-full flex items-center justify-center py-3.5 px-4 rounded-full font-bold text-[15px] bg-brand-700 hover:bg-brand-800 text-white transition-colors disabled:opacity-70 disabled:cursor-not-allowed" 
+              class="w-full flex items-center justify-center py-3.5 px-4 rounded-full font-bold text-[15px] bg-brand-300 hover:bg-brand-400 text-ink transition-colors disabled:opacity-70 disabled:cursor-not-allowed" 
               :disabled="loading"
             >
               <span v-if="!loading">Sign In</span>
