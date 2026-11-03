@@ -120,7 +120,7 @@
                   <p class="text-xs text-gray-500">{{ new Date(order.createdAt).toLocaleDateString() }}</p>
                 </div>
                 <div class="text-right">
-                  <p class="font-bold text-gray-900">${{ (order.totalAmount || 0).toFixed(2) }}</p>
+                  <p class="font-bold text-gray-900">{{ $money((order.totalAmount || 0).toFixed(2)) }}</p>
                   <p class="text-xs text-gray-500">{{ order.status }} · {{ order.paymentStatus }}</p>
                 </div>
               </div>

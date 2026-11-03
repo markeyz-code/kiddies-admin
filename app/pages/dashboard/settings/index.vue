@@ -36,7 +36,7 @@
           </div>
 
           <div class="w-full md:w-1/2">
-            <CustomInput v-model="settings.currency" label="Store Currency" placeholder="USD">
+            <CustomInput v-model="settings.currency" label="Store Currency" placeholder="NGN">
               <template #leading>
                 <Globe class="w-5 h-5 text-gray-400" />
               </template>
@@ -82,13 +82,13 @@
         </div>
         <div class="p-6">
           <div class="grid md:grid-cols-2 gap-6 mb-6">
-            <CustomInput v-model.number="settings.shippingFee" type="number" step="0.01" label="Default Shipping Fee ($)">
+            <CustomInput v-model.number="settings.shippingFee" type="number" step="0.01" label="Default Shipping Fee (₦)">
               <template #leading>
                 <Truck class="w-5 h-5 text-gray-400" />
               </template>
             </CustomInput>
             
-            <CustomInput v-model.number="settings.freeShippingThreshold" type="number" step="0.01" label="Free Shipping Threshold ($)">
+            <CustomInput v-model.number="settings.freeShippingThreshold" type="number" step="0.01" label="Free Shipping Threshold (₦)">
               <template #leading>
                 <Truck class="w-5 h-5 text-gray-400" />
               </template>
@@ -141,7 +141,7 @@ const settings = ref({
   storeEmail: '',
   phone: '',
   address: '',
-  currency: 'USD',
+  currency: 'NGN',
   shippingFee: 0,
   freeShippingThreshold: 0,
   taxRate: 0,

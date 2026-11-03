@@ -34,7 +34,7 @@
             <p class="font-bold text-gray-900 leading-snug">{{ row.name }}</p>
             <p class="text-xs text-gray-500 mt-0.5">{{ row.category ? `${row.sku} · ${row.category}` : row.sku }}</p>
             <div class="flex flex-wrap items-center gap-2 mt-2">
-              <span class="font-bold text-gray-900">${{ (row.basePrice || 0).toFixed(2) }}</span>
+              <span class="font-bold text-gray-900">{{ $money((row.basePrice || 0).toFixed(2)) }}</span>
               <span class="text-xs text-gray-500">{{ row.variants?.reduce((sum, v) => sum + (v.stockQuantity || 0), 0) || 0 }} in stock</span>
               <span v-if="row.status === 'active' || row.isActive" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-brand-100 text-brand-700">Active</span>
               <span v-else-if="row.status === 'draft'" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700">Draft</span>
@@ -95,7 +95,7 @@
           </template>
           
           <template #price-cell="{ row: { original: row } }">
-            <span class="font-bold text-gray-900">${{ (row.basePrice || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</span>
+            <span class="font-bold text-gray-900">{{ $money((row.basePrice || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })) }}</span>
           </template>
           
           <template #actions-cell="{ row: { original: row } }">
@@ -202,7 +202,7 @@
         <div class="grid grid-cols-2 gap-5">
           <CustomInput 
             v-model.number="newProduct.basePrice" 
-            label="Base Price ($)" 
+            label="Base Price (₦)" 
             type="number" 
             step="0.01" 
             placeholder="0" 

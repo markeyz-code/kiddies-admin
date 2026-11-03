@@ -28,12 +28,12 @@
               <h3 class="font-bold text-gray-500 text-sm">Total Revenue</h3>
               <DollarSign class="w-5 h-5 text-gray-400" />
             </div>
-            <div class="text-xl sm:text-3xl font-bold text-gray-900 mb-2" v-if="!loading">${{ (analytics?.totalRevenue || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</div>
+            <div class="text-xl sm:text-3xl font-bold text-gray-900 mb-2" v-if="!loading">{{ $money((analytics?.totalRevenue || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })) }}</div>
             <div v-else class="h-9 w-32 bg-gray-100 rounded animate-pulse mb-2"></div>
           </div>
           <div class="flex items-center text-xs font-bold mt-2">
             <span class="text-brand-600 flex items-center bg-brand-50 px-2 py-0.5 rounded mr-2">Paid</span>
-            <span class="text-gray-400">${{ (analytics?.paidRevenue || 0).toLocaleString(undefined, { maximumFractionDigits: 0 }) }}</span>
+            <span class="text-gray-400">{{ $money((analytics?.paidRevenue || 0).toLocaleString(undefined, { maximumFractionDigits: 0 })) }}</span>
           </div>
         </div>
 
@@ -43,7 +43,7 @@
               <h3 class="font-bold text-gray-500 text-sm">Estimated Profit</h3>
               <TrendingUp class="w-5 h-5 text-gray-400" />
             </div>
-            <div class="text-xl sm:text-3xl font-bold text-brand-700 mb-2" v-if="!loading">${{ (analytics?.totalProfit || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</div>
+            <div class="text-xl sm:text-3xl font-bold text-brand-700 mb-2" v-if="!loading">{{ $money((analytics?.totalProfit || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })) }}</div>
             <div v-else class="h-9 w-32 bg-gray-100 rounded animate-pulse mb-2"></div>
           </div>
           <div class="flex items-center text-xs font-bold mt-2">
@@ -73,7 +73,7 @@
               <h3 class="font-bold text-gray-500 text-sm">Avg Order Value</h3>
               <BarChart3 class="w-5 h-5 text-gray-400" />
             </div>
-            <div class="text-xl sm:text-3xl font-bold text-gray-900 mb-2" v-if="!loading">${{ (analytics?.averageOrderValue || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</div>
+            <div class="text-xl sm:text-3xl font-bold text-gray-900 mb-2" v-if="!loading">{{ $money((analytics?.averageOrderValue || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })) }}</div>
             <div v-else class="h-9 w-32 bg-gray-100 rounded animate-pulse mb-2"></div>
           </div>
           <div class="flex items-center text-xs font-bold mt-2">
@@ -105,7 +105,7 @@
               </div>
               <div class="text-right">
                 <p class="font-bold text-gray-900 text-sm">{{ product.quantity }} sold</p>
-                <p class="text-xs text-brand-600 font-medium">${{ product.revenue.toLocaleString() }}</p>
+                <p class="text-xs text-brand-600 font-medium">{{ $money(product.revenue.toLocaleString()) }}</p>
               </div>
             </li>
             <li v-if="topProducts.length === 0" class="p-8 text-center text-gray-500 font-medium text-sm">
@@ -171,7 +171,7 @@
                 <p class="font-bold text-brand-700">{{ row.orderNumber }}</p>
                 <p class="text-xs text-gray-500">{{ new Date(row.createdAt).toLocaleDateString() }}</p>
               </div>
-              <p class="font-bold text-gray-900">${{ (row.totalAmount || 0).toFixed(2) }}</p>
+              <p class="font-bold text-gray-900">{{ $money((row.totalAmount || 0).toFixed(2)) }}</p>
             </div>
             <p class="mt-2 text-sm font-semibold text-gray-900">{{ row.customer?.firstName }} {{ row.customer?.lastName }}</p>
             <p class="text-xs text-gray-500 truncate">{{ row.customer?.email }}</p>
@@ -191,7 +191,7 @@
               </div>
             </template>
             <template #amount-cell="{ row: { original: row } }">
-              <span class="font-bold text-gray-900">${{ row.totalAmount.toLocaleString() }}</span>
+              <span class="font-bold text-gray-900">{{ $money(row.totalAmount.toLocaleString()) }}</span>
             </template>
             <template #status-cell="{ row: { original: row } }">
               <span class="px-2.5 py-1 rounded-full text-xs font-bold" :class="getStatusClass(row.status)">

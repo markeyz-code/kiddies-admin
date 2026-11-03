@@ -41,7 +41,7 @@
           </div>
           <p class="mt-2 text-sm font-bold text-gray-800">
             <span v-if="row.discountType === 'percentage'">{{ row.discountValue }}% off</span>
-            <span v-else>${{ row.discountValue?.toFixed(2) || '0.00' }} off</span>
+            <span v-else>{{ $money(row.discountValue?.toFixed(2) || '0.00') }} off</span>
           </p>
           <div class="flex gap-2 mt-3">
             <button @click="openEdit(row)" class="flex-1 inline-flex items-center justify-center gap-1.5 border border-brand-200 bg-brand-50 text-brand-700 font-bold text-xs py-2 rounded-full"><Pencil class="w-3.5 h-3.5" /> Edit</button>
@@ -63,7 +63,7 @@
           <template #discount-cell="{ row: { original: row } }">
             <span class="font-semibold text-gray-800">
               <span v-if="row.discountType === 'percentage'">{{ row.discountValue }}%</span>
-              <span v-else>${{ row.discountValue?.toFixed(2) || '0.00' }}</span>
+              <span v-else>{{ $money(row.discountValue?.toFixed(2) || '0.00') }}</span>
             </span>
             <span class="text-xs text-gray-500 ml-1">Off</span>
           </template>
@@ -136,7 +136,7 @@
         <CustomSelect 
           v-model="form.discountType" 
           label="Discount Type" 
-          :options="[{ label: 'Percentage (%)', value: 'percentage' }, { label: 'Fixed Amount ($)', value: 'fixed' }]" 
+          :options="[{ label: 'Percentage (%)', value: 'percentage' }, { label: 'Fixed Amount (₦)', value: 'fixed' }]" 
         />
         
         <CustomInput 
@@ -150,7 +150,7 @@
         <CustomInput v-model="form.description" label="Description (optional)" placeholder="e.g. 20% off fall collection" />
 
         <div class="grid grid-cols-2 gap-5">
-          <CustomInput v-model.number="form.minPurchaseAmount" type="number" label="Minimum Purchase ($)" placeholder="0" />
+          <CustomInput v-model.number="form.minPurchaseAmount" type="number" label="Minimum Purchase (₦)" placeholder="0" />
           <CustomInput v-model.number="form.usageLimit" type="number" label="Usage Limit (0 = unlimited)" placeholder="0" />
         </div>
 

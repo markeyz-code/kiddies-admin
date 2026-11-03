@@ -141,7 +141,7 @@
                     <td class="px-4 py-3">{{ item.name }}</td>
                     <td class="px-4 py-3">{{ item.sku }}</td>
                     <td class="px-4 py-3 text-center">{{ item.quantity }}</td>
-                    <td class="px-4 py-3 text-right">${{ (item.price || 0).toFixed(2) }}</td>
+                    <td class="px-4 py-3 text-right">{{ $money((item.price || 0).toFixed(2)) }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -152,23 +152,23 @@
             <div class="w-1/2 space-y-2 text-sm">
               <div class="flex justify-between text-gray-500">
                 <span>Subtotal</span>
-                <span class="font-medium text-gray-900">${{ (selectedOrder.subtotal || 0).toFixed(2) }}</span>
+                <span class="font-medium text-gray-900">{{ $money((selectedOrder.subtotal || 0).toFixed(2)) }}</span>
               </div>
               <div class="flex justify-between text-gray-500">
                 <span>Shipping</span>
-                <span class="font-medium text-gray-900">${{ (selectedOrder.shippingFee || 0).toFixed(2) }}</span>
+                <span class="font-medium text-gray-900">{{ $money((selectedOrder.shippingFee || 0).toFixed(2)) }}</span>
               </div>
               <div v-if="selectedOrder.discountAmount > 0" class="flex justify-between text-gray-500">
                 <span>Discount {{ selectedOrder.couponCode ? `(${selectedOrder.couponCode})` : '' }}</span>
-                <span class="font-medium text-brand-600">-${{ (selectedOrder.discountAmount || 0).toFixed(2) }}</span>
+                <span class="font-medium text-brand-600">-{{ $money((selectedOrder.discountAmount || 0).toFixed(2)) }}</span>
               </div>
               <div class="flex justify-between text-gray-500">
                 <span>Tax</span>
-                <span class="font-medium text-gray-900">${{ (selectedOrder.tax || 0).toFixed(2) }}</span>
+                <span class="font-medium text-gray-900">{{ $money((selectedOrder.tax || 0).toFixed(2)) }}</span>
               </div>
               <div class="flex justify-between text-lg font-bold text-gray-900 pt-2 border-t border-gray-100">
                 <span>Total</span>
-                <span>${{ (selectedOrder.totalAmount || 0).toFixed(2) }}</span>
+                <span>{{ $money((selectedOrder.totalAmount || 0).toFixed(2)) }}</span>
               </div>
             </div>
           </div>
