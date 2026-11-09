@@ -10,6 +10,11 @@
       </button>
     </div>
 
+    <NuxtLink to="/dashboard/settings" class="mb-4 flex items-center gap-3 rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm font-medium text-brand-800 hover:bg-brand-100 transition-colors">
+      <Megaphone class="w-5 h-5 flex-shrink-0" />
+      <span><strong class="font-bold">Top announcement bar:</strong> configure the message, link and on/off switch in Settings → Contact &amp; Announcement Bar. It stays hidden when empty.</span>
+    </NuxtLink>
+
     <div class="mb-4 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
       <h2 class="text-lg font-bold text-gray-800">
         Promotions — <span class="font-normal">{{ filteredPromotions.length }} records</span>

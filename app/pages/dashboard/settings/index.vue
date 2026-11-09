@@ -54,12 +54,25 @@
       <!-- Contact & Social -->
       <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
-          <h2 class="font-bold text-lg text-gray-900">Contact & Announcement</h2>
+          <h2 class="font-bold text-lg text-gray-900">Contact &amp; Announcement Bar</h2>
         </div>
         <div class="p-6 space-y-6">
+          <div class="rounded-xl border border-gray-200 bg-gray-50 p-4">
+            <label class="flex cursor-pointer items-start gap-3">
+              <input v-model="settings.announcementEnabled" type="checkbox" class="mt-0.5 h-4 w-4 rounded border-gray-300 text-brand-700 focus:ring-brand-500" />
+              <span>
+                <span class="block text-sm font-bold text-gray-900">Show the announcement bar on the storefront</span>
+                <span class="mt-0.5 block text-xs text-gray-500">When this is off, or the message is empty, nothing is shown at the top of the website.</span>
+              </span>
+            </label>
+          </div>
           <div class="grid md:grid-cols-2 gap-6">
-            <CustomInput v-model="settings.phone" label="Phone / WhatsApp Number" placeholder="+234 800 JASMARKIDS" />
-            <CustomInput v-model="settings.announcement" label="Announcement Bar Text" placeholder="Vibrant Outfits for African Kids • Nationwide Delivery" />
+            <CustomInput v-model="settings.phone" label="Phone / WhatsApp Number" placeholder="0807 913 1425" />
+            <CustomInput v-model="settings.announcement" label="Announcement Message" placeholder="Leave empty to hide the bar" />
+          </div>
+          <div class="grid md:grid-cols-2 gap-6">
+            <CustomInput v-model="settings.announcementLink" label="Announcement Link (optional)" placeholder="/products" />
+            <CustomInput v-model="settings.announcementLinkText" label="Announcement Button Text" placeholder="Shop now" />
           </div>
           <CustomInput v-model="settings.address" label="Boutique / Delivery Note" placeholder="Online Boutique — Nationwide Delivery Across Nigeria" />
           <div class="grid md:grid-cols-3 gap-6">
@@ -148,7 +161,10 @@ const settings = ref({
   instagram: '',
   facebook: '',
   twitter: '',
-  announcement: ''
+  announcementEnabled: false,
+  announcement: '',
+  announcementLink: '',
+  announcementLinkText: 'Shop now'
 })
 
 const loadError = ref('')

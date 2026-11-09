@@ -3,7 +3,7 @@
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-8">
       <div>
         <h1 class="text-2xl font-bold">Product Policies</h1>
-        <p class="text-gray-500 font-medium">Manage product details, shipping and returns configurations</p>
+        <p class="text-gray-500 font-medium">Manage product details, shipping and exchanges configurations</p>
       </div>
       <UButton color="primary" class="whitespace-nowrap bg-brand-700 hover:bg-brand-800 text-white font-bold py-2.5 px-5 rounded-full" @click="openAddModal">Add Policy</UButton>
     </div>
@@ -88,8 +88,8 @@
 
         <CustomTextarea 
           v-model="newPolicy.shippingAndReturns" 
-          label="Shipping & Returns Policy" 
-          placeholder="Enter the shipping timeframe and return window..." 
+          label="Shipping &amp; Exchanges Policy" 
+          placeholder="Enter the shipping timeframe and exchange window..." 
           :rows="4" 
         />
         

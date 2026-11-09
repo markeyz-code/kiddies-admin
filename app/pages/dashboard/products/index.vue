@@ -280,7 +280,7 @@
       <form @submit.prevent="handleQuickCreatePolicy" class="space-y-4">
         <CustomInput v-model="newPolicy.name" label="Profile Name" placeholder="e.g. Standard Clothing Policy" required />
         <CustomTextarea v-model="newPolicy.productDetails" label="Product Details" placeholder="Material, care instructions..." :rows="3" />
-        <CustomTextarea v-model="newPolicy.shippingAndReturns" label="Shipping & Returns" placeholder="Timeframe, return window..." :rows="3" />
+        <CustomTextarea v-model="newPolicy.shippingAndReturns" label="Shipping &amp; Exchanges" placeholder="Timeframe, exchange window..." :rows="3" />
         
         <div class="flex justify-end space-x-3 pt-4">
           <button type="button" @click="isAddPolicyModalOpen = false" class="px-5 py-2.5 text-sm font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors">Cancel</button>
