@@ -332,7 +332,7 @@ const formattedOrders = computed(() => {
     customer: order.customer ? `${order.customer.firstName} ${order.customer.lastName}` : 'Guest',
     email: order.customer?.email || 'N/A',
     date: new Date(order.createdAt).toLocaleDateString(),
-    total: `$${(order.totalAmount || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+    total: `₦${(order.totalAmount || 0).toLocaleString('en-NG')}`,
     paymentStatus: order.paymentStatus || 'Unpaid',
     status: order.status || 'Pending',
     actions: 'View'

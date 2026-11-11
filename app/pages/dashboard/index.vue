@@ -402,7 +402,7 @@ const generateReport = async () => {
       order.tax,
       order.discountAmount || 0,
       order.totalAmount,
-      order.currency || 'USD'
+      order.currency || 'NGN'
     ])
     const escape = (value) => `"${String(value ?? '').replace(/"/g, '""')}"`
     const csv = [header, ...rows].map((row) => row.map(escape).join(',')).join('\n')

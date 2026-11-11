@@ -107,6 +107,11 @@
               </template>
             </CustomInput>
           </div>
+          <div class="rounded-xl bg-brand-50 border border-brand-200 p-4 text-sm text-brand-800">
+            <p class="font-bold mb-1">How to avoid losing money on delivery</p>
+            <p>Set the delivery fee to your real average courier cost, including packaging. A free-shipping threshold of at least <strong>10× the delivery fee</strong> (for example ₦90,000 when delivery is ₦9,000) keeps delivery below about 10% of the order value. Only lower it if your product margin can absorb the difference.</p>
+          </div>
+
           <div class="flex justify-end pt-4 border-t border-gray-100">
             <button @click="saveSettings" :disabled="saving || loading || !!loadError" class="bg-brand-700 hover:bg-brand-800 text-white font-bold py-2.5 px-6 rounded-full transition-colors text-sm flex items-center disabled:opacity-50">
               <Save class="w-4 h-4 mr-2" /> {{ saving ? 'Saving...' : 'Save Changes' }}
